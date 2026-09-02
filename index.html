@@ -2,9 +2,17 @@
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
 <title>Իմ Վաճառքները</title>
+
+<!-- APP / PWA -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#08101d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HT Sales">
+<link rel="apple-touch-icon" href="./IMG_7968.png">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -12,8 +20,13 @@
 <style>
 *{box-sizing:border-box}
 
+html{
+  background:#08101d;
+}
+
 body{
   margin:0;
+  min-height:100vh;
   background:#08101d;
   color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
@@ -23,6 +36,8 @@ body{
   max-width:600px;
   margin:auto;
   padding:18px;
+  padding-top:max(18px,env(safe-area-inset-top));
+  padding-bottom:max(25px,env(safe-area-inset-bottom));
 }
 
 .logo{
@@ -96,6 +111,7 @@ h1{
   padding:15px;
   font-size:16px;
   font-weight:900;
+  cursor:pointer;
 }
 
 .status{
@@ -267,6 +283,7 @@ h1{
   padding:16px;
   font-size:16px;
   font-weight:900;
+  cursor:pointer;
 }
 
 .hidden{
@@ -295,27 +312,20 @@ h1{
 >
 
 <div class="header">
-
   <h1>Իմ Վաճառքները</h1>
 
   <div class="subtitle">
     Տես քո այսօրվա արդյունքը
   </div>
-
 </div>
 
 <div class="clockBox">
 
-  <div
-    class="clock"
-    id="clock">
+  <div class="clock" id="clock">
     00:00:00
   </div>
 
-  <div
-    class="clockDate"
-    id="clockDate">
-  </div>
+  <div class="clockDate" id="clockDate"></div>
 
 </div>
 
@@ -439,18 +449,18 @@ h1{
 
 <script>
 
-const SUPABASE_URL=
+const SUPABASE_URL =
 "https://pstoegdsngmkxggyaloz.supabase.co";
 
-const SUPABASE_KEY=
+const SUPABASE_KEY =
 "sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
 
-const db=supabase.createClient(
+const db = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
-const fields=[
+const fields = [
   "package_3900",
   "package_4900",
   "package_5900",
@@ -459,24 +469,24 @@ const fields=[
   "package_8900"
 ];
 
-let currentName="";
-let currentDay="";
-let currentEmployee=null;
-let currentPackages=[];
-let currentSalesRow=null;
-let refreshTimer=null;
+let currentName = "";
+let currentDay = "";
+let currentEmployee = null;
+let currentPackages = [];
+let currentSalesRow = null;
+let refreshTimer = null;
 
 function money(n){
 
   return new Intl.NumberFormat("hy-AM")
-    .format(Number(n)||0)+" դրամ";
+    .format(Number(n) || 0) + " դրամ";
 }
 
 function localDateKey(){
 
-  const d=new Date();
+  const d = new Date();
 
-  return[
+  return [
     d.getFullYear(),
     String(d.getMonth()+1).padStart(2,"0"),
     String(d.getDate()).padStart(2,"0")
@@ -485,7 +495,7 @@ function localDateKey(){
 
 function prettyDate(dateString){
 
-  const months=[
+  const months = [
     "Հունվար",
     "Փետրվար",
     "Մարտ",
@@ -500,16 +510,22 @@ function prettyDate(dateString){
     "Դեկտեմբեր"
   ];
 
-  const parts=dateString.split("-");
+  const parts = dateString.split("-");
 
-  return `${Number(parts[2])} ${months[Number(parts[1])-1]} ${parts[0]}`;
+  return (
+    Number(parts[2]) + " " +
+    months[Number(parts[1])-1] + " " +
+    parts[0]
+  );
 }
+
+/* ԺԱՄԱՑՈՒՅՑ */
 
 function updateClock(){
 
-  const d=new Date();
+  const d = new Date();
 
-  document.getElementById("clock").textContent=
+  document.getElementById("clock").textContent =
     d.toLocaleTimeString(
       "hy-AM",
       {
@@ -520,7 +536,7 @@ function updateClock(){
       }
     );
 
-  document.getElementById("clockDate").textContent=
+  document.getElementById("clockDate").textContent =
     d.toLocaleDateString(
       "hy-AM",
       {
@@ -537,14 +553,18 @@ updateClock();
 
 function setStatus(text){
 
-  document.getElementById("status").textContent=text;
+  document.getElementById("status").textContent = text;
 }
+
+/* ԱՇԽԱՏԱԿՑԻ ՓՆՏՐՈՒՄ */
 
 async function findEmployee(){
 
-  const input=document
-    .getElementById("nameInput")
-    .value.trim();
+  const input =
+    document
+      .getElementById("nameInput")
+      .value
+      .trim();
 
   if(!input){
 
@@ -553,8 +573,8 @@ async function findEmployee(){
     return;
   }
 
-  currentName=input;
-  currentDay=localDateKey();
+  currentName = input;
+  currentDay = localDateKey();
 
   localStorage.setItem(
     "employeeName",
@@ -566,16 +586,19 @@ async function findEmployee(){
   startAutoRefresh();
 }
 
+/* ՏՎՅԱԼՆԵՐԻ ԲԵՌՆՈՒՄ */
+
 async function loadEmployee(showLoading=false){
 
   if(!currentName){
     return;
   }
 
-  const today=localDateKey();
+  const today = localDateKey();
 
-  if(today!==currentDay){
-    currentDay=today;
+  if(today !== currentDay){
+    currentDay = today;
+    currentSalesRow = null;
   }
 
   if(showLoading){
@@ -584,24 +607,25 @@ async function loadEmployee(showLoading=false){
 
   try{
 
-    const employeeRes=await db
-      .from("employees")
-      .select("*")
-      .ilike("name",currentName)
-      .eq("active",true)
-      .maybeSingle();
+    const employeeRes =
+      await db
+        .from("employees")
+        .select("*")
+        .ilike("name",currentName)
+        .eq("active",true)
+        .maybeSingle();
 
     if(employeeRes.error){
       throw employeeRes.error;
     }
 
-    const employee=employeeRes.data;
+    const employee = employeeRes.data;
 
     if(!employee){
 
-      currentEmployee=null;
-      currentPackages=[];
-      currentSalesRow=null;
+      currentEmployee = null;
+      currentPackages = [];
+      currentSalesRow = null;
 
       document
         .getElementById("result")
@@ -619,7 +643,7 @@ async function loadEmployee(showLoading=false){
     const [
       packagesRes,
       salesRes
-    ]=await Promise.all([
+    ] = await Promise.all([
 
       db
         .from("packages")
@@ -643,9 +667,9 @@ async function loadEmployee(showLoading=false){
       throw salesRes.error;
     }
 
-    currentEmployee=employee;
-    currentPackages=packagesRes.data||[];
-    currentSalesRow=salesRes.data||null;
+    currentEmployee = employee;
+    currentPackages = packagesRes.data || [];
+    currentSalesRow = salesRes.data || null;
 
     document
       .getElementById("notFound")
@@ -667,6 +691,8 @@ async function loadEmployee(showLoading=false){
   }
 }
 
+/* ԷՋԻ ՑՈՒՑԱԴՐՈՒՄ */
+
 function renderEmployee(){
 
   if(!currentEmployee){
@@ -679,38 +705,38 @@ function renderEmployee(){
 
   document.getElementById(
     "employeeName"
-  ).textContent=
+  ).textContent =
     currentEmployee.name;
 
   document.getElementById(
     "dayText"
-  ).textContent=
-    "Այսօրվա արդյունք — "+
+  ).textContent =
+    "Այսօրվա արդյունք — " +
     prettyDate(currentDay);
 
-  let totalSales=0;
-  let totalBonus=0;
-  let html="";
+  let totalSales = 0;
+  let totalBonus = 0;
+  let html = "";
 
   currentPackages.forEach((p,i)=>{
 
-    const count=
+    const count =
       currentSalesRow
         ? Number(
             currentSalesRow[fields[i]]
-          )||0
+          ) || 0
         : 0;
 
-    const bonus=
-      Number(p.bonus)||0;
+    const bonus =
+      Number(p.bonus) || 0;
 
-    const earned=
-      count*bonus;
+    const earned =
+      count * bonus;
 
-    totalSales+=count;
-    totalBonus+=earned;
+    totalSales += count;
+    totalBonus += earned;
 
-    html+=`
+    html += `
 
       <div class="package">
 
@@ -768,19 +794,19 @@ function renderEmployee(){
 
   document
     .getElementById("packages")
-    .innerHTML=html;
+    .innerHTML = html;
 
   document
     .getElementById("totalSales")
-    .textContent=totalSales;
+    .textContent = totalSales;
 
   document
     .getElementById("totalBonus")
-    .textContent=money(totalBonus);
+    .textContent = money(totalBonus);
 
   document
     .getElementById("updatedTime")
-    .textContent=
+    .textContent =
       new Date().toLocaleTimeString(
         "hy-AM",
         {
@@ -791,7 +817,7 @@ function renderEmployee(){
       );
 }
 
-/* ===== EXCEL ՆԵՐԲԵՌՆՈՒՄ ===== */
+/* EXCEL */
 
 function downloadMyResult(){
 
@@ -804,68 +830,68 @@ function downloadMyResult(){
     return;
   }
 
-  if(typeof XLSX==="undefined"){
+  if(typeof XLSX === "undefined"){
 
     alert(
-      "Excel համակարգը չի բեռնվել։ Թարմացրեք էջը և նորից փորձեք։"
+      "Excel համակարգը չի բեռնվել։ Թարմացրեք էջը։"
     );
 
     return;
   }
 
-  let totalSales=0;
-  let totalBonus=0;
+  let totalSales = 0;
+  let totalBonus = 0;
 
-  const rows=[];
+  const rows = [
 
-  rows.push([
-    "ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"
-  ]);
+    ["ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"],
 
-  rows.push([]);
+    [],
 
-  rows.push([
-    "Աշխատակից",
-    currentEmployee.name
-  ]);
+    [
+      "Աշխատակից",
+      currentEmployee.name
+    ],
 
-  rows.push([
-    "Ամսաթիվ",
-    prettyDate(currentDay)
-  ]);
+    [
+      "Ամսաթիվ",
+      prettyDate(currentDay)
+    ],
 
-  rows.push([]);
+    [],
 
-  rows.push([
-    "Փաթեթ",
-    "Վաճառքների քանակ",
-    "Բոնուս 1 վաճառքից",
-    "Ստացած բոնուս"
-  ]);
+    [
+      "Փաթեթ",
+      "Վաճառքների քանակ",
+      "Բոնուս 1 վաճառքից",
+      "Ստացած բոնուս"
+    ]
+
+  ];
 
   currentPackages.forEach((p,i)=>{
 
-    const count=
+    const count =
       currentSalesRow
         ? Number(
             currentSalesRow[fields[i]]
-          )||0
+          ) || 0
         : 0;
 
-    const bonus=
-      Number(p.bonus)||0;
+    const bonus =
+      Number(p.bonus) || 0;
 
-    const earned=
-      count*bonus;
+    const earned =
+      count * bonus;
 
-    totalSales+=count;
-    totalBonus+=earned;
+    totalSales += count;
+    totalBonus += earned;
 
     rows.push([
-      p.price+" դրամ",
+      p.price + " դրամ",
       count,
-      bonus+" դրամ",
-      earned+" դրամ"
+      bonus + " դրամ",
+      earned + " դրամ"
     ]);
   });
 
@@ -878,7 +904,7 @@ function downloadMyResult(){
 
   rows.push([
     "Ընդհանուր բոնուս",
-    totalBonus+" դրամ"
+    totalBonus + " դրամ"
   ]);
 
   rows.push([]);
@@ -889,17 +915,17 @@ function downloadMyResult(){
 
   try{
 
-    const ws=
+    const ws =
       XLSX.utils.aoa_to_sheet(rows);
 
-    ws["!cols"]=[
+    ws["!cols"] = [
       {wch:42},
       {wch:22},
       {wch:25},
       {wch:25}
     ];
 
-    const wb=
+    const wb =
       XLSX.utils.book_new();
 
     XLSX.utils.book_append_sheet(
@@ -908,11 +934,7 @@ function downloadMyResult(){
       "Իմ արդյունքը"
     );
 
-    /*
-      Excel-ը ստեղծում ենք browser-ի մեջ
-    */
-
-    const excelData=
+    const excelData =
       XLSX.write(
         wb,
         {
@@ -921,7 +943,7 @@ function downloadMyResult(){
         }
       );
 
-    const blob=
+    const blob =
       new Blob(
         [excelData],
         {
@@ -930,18 +952,18 @@ function downloadMyResult(){
         }
       );
 
-    const url=
+    const url =
       URL.createObjectURL(blob);
 
-    const link=
+    const link =
       document.createElement("a");
 
-    link.href=url;
+    link.href = url;
 
-    link.download=
+    link.download =
       "Քո Այսօրվա Արդյունքը.xlsx";
 
-    link.style.display="none";
+    link.style.display = "none";
 
     document.body.appendChild(link);
 
@@ -965,7 +987,7 @@ function downloadMyResult(){
   }
 }
 
-/* ===== AUTO REFRESH ===== */
+/* AUTO REFRESH */
 
 function startAutoRefresh(){
 
@@ -973,26 +995,26 @@ function startAutoRefresh(){
     clearInterval(refreshTimer);
   }
 
-  refreshTimer=setInterval(()=>{
+  refreshTimer =
+    setInterval(()=>{
 
-    const today=
-      localDateKey();
+      const today =
+        localDateKey();
 
-    if(today!==currentDay){
+      if(today !== currentDay){
 
-      currentDay=today;
-      currentSalesRow=null;
-    }
+        currentDay = today;
+        currentSalesRow = null;
+      }
 
-    if(currentName){
+      if(currentName){
+        loadEmployee(false);
+      }
 
-      loadEmployee(false);
-    }
-
-  },5000);
+    },5000);
 }
 
-/* ENTER-ով բացել */
+/* ENTER */
 
 document
   .getElementById("nameInput")
@@ -1000,34 +1022,34 @@ document
     "keydown",
     event=>{
 
-      if(event.key==="Enter"){
+      if(event.key === "Enter"){
         findEmployee();
       }
 
     }
   );
 
-/* ՀԻՇԵԼ ԱՇԽԱՏԱԿՑԻՆ */
+/* ՀԻՇԵԼ ԱՆՈՒՆԸ */
 
 window.addEventListener(
   "load",
   async()=>{
 
-    currentDay=
+    currentDay =
       localDateKey();
 
-    const saved=
+    const saved =
       localStorage.getItem(
         "employeeName"
       );
 
     if(saved){
 
-      currentName=saved;
+      currentName = saved;
 
       document
         .getElementById("nameInput")
-        .value=saved;
+        .value = saved;
 
       await loadEmployee(true);
 
