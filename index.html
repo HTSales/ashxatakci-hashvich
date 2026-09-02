@@ -18,7 +18,10 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 html{
   background:#08101d;
@@ -29,7 +32,12 @@ body{
   min-height:100vh;
   background:#08101d;
   color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
 
 .container{
@@ -134,13 +142,6 @@ h1{
   font-weight:900;
 }
 
-.motivation{
-  margin-top:7px;
-  color:#62e9b8;
-  font-size:16px;
-  font-weight:800;
-}
-
 .dayText{
   margin-top:8px;
   color:#9aa8c8;
@@ -163,6 +164,16 @@ h1{
   font-size:30px;
   font-weight:900;
   margin-top:5px;
+}
+
+.motivation{
+  margin-top:10px;
+  background:rgba(0,0,0,.17);
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:15px;
+  font-weight:900;
+  color:#fff;
 }
 
 .summaryGrid{
@@ -298,6 +309,7 @@ h1{
   text-align:center;
   margin-top:12px;
 }
+
 </style>
 </head>
 
@@ -312,20 +324,28 @@ h1{
 >
 
 <div class="header">
+
   <h1>Իմ Վաճառքները</h1>
 
   <div class="subtitle">
     Տես քո այսօրվա արդյունքը
   </div>
+
 </div>
 
 <div class="clockBox">
 
-  <div class="clock" id="clock">
+  <div
+    class="clock"
+    id="clock"
+  >
     00:00:00
   </div>
 
-  <div class="clockDate" id="clockDate"></div>
+  <div
+    class="clockDate"
+    id="clockDate"
+  ></div>
 
 </div>
 
@@ -347,25 +367,27 @@ h1{
 
 </div>
 
-<div id="status" class="status"></div>
+<div
+  id="status"
+  class="status"
+></div>
 
-<div id="result" class="hidden">
+<div
+  id="result"
+  class="hidden"
+>
 
   <div class="welcome">
 
     <div
       class="employeeName"
-      id="employeeName">
-    </div>
-
-    <div class="motivation">
-      Դու կարող ես ավելին... 🚀
-    </div>
+      id="employeeName"
+    ></div>
 
     <div
       class="dayText"
-      id="dayText">
-    </div>
+      id="dayText"
+    ></div>
 
   </div>
 
@@ -377,8 +399,16 @@ h1{
 
     <div
       class="summaryValue"
-      id="totalBonus">
+      id="totalBonus"
+    >
       0 դրամ
+    </div>
+
+    <div
+      class="motivation"
+      id="motivationText"
+    >
+      Սա քիչ է, ավելին կարող ես դու... 🚀
     </div>
 
     <div class="summaryGrid">
@@ -391,7 +421,8 @@ h1{
 
         <div
           class="value"
-          id="totalSales">
+          id="totalSales"
+        >
           0
         </div>
 
@@ -405,7 +436,8 @@ h1{
 
         <div
           class="value"
-          id="updatedTime">
+          id="updatedTime"
+        >
           —
         </div>
 
@@ -455,7 +487,8 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
 
-const db = supabase.createClient(
+const db =
+supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -476,11 +509,22 @@ let currentPackages = [];
 let currentSalesRow = null;
 let refreshTimer = null;
 
+
+/* -------------------------
+   ԳՈՒՄԱՐ
+------------------------- */
+
 function money(n){
 
   return new Intl.NumberFormat("hy-AM")
-    .format(Number(n) || 0) + " դրամ";
+    .format(Number(n) || 0)
+    + " դրամ";
 }
+
+
+/* -------------------------
+   ԱՅՍՕՐՎԱ ՕՐԸ
+------------------------- */
 
 function localDateKey(){
 
@@ -488,12 +532,23 @@ function localDateKey(){
 
   return [
     d.getFullYear(),
-    String(d.getMonth()+1).padStart(2,"0"),
-    String(d.getDate()).padStart(2,"0")
+    String(
+      d.getMonth()+1
+    ).padStart(2,"0"),
+    String(
+      d.getDate()
+    ).padStart(2,"0")
   ].join("-");
 }
 
-function prettyDate(dateString){
+
+/* -------------------------
+   ԱՄՍԱԹԻՎ
+------------------------- */
+
+function prettyDate(
+  dateString
+){
 
   const months = [
     "Հունվար",
@@ -510,71 +565,103 @@ function prettyDate(dateString){
     "Դեկտեմբեր"
   ];
 
-  const parts = dateString.split("-");
+  const parts =
+    dateString.split("-");
 
   return (
-    Number(parts[2]) + " " +
-    months[Number(parts[1])-1] + " " +
-    parts[0]
+    Number(parts[2])
+    + " "
+    + months[
+        Number(parts[1])-1
+      ]
+    + " "
+    + parts[0]
   );
 }
 
-/* ԺԱՄԱՑՈՒՅՑ */
+
+/* -------------------------
+   ԺԱՄԱՑՈՒՅՑ
+------------------------- */
 
 function updateClock(){
 
   const d = new Date();
 
-  document.getElementById("clock").textContent =
-    d.toLocaleTimeString(
-      "hy-AM",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit",
-        hour12:false
-      }
-    );
+  document
+    .getElementById("clock")
+    .textContent =
+      d.toLocaleTimeString(
+        "hy-AM",
+        {
+          hour:"2-digit",
+          minute:"2-digit",
+          second:"2-digit",
+          hour12:false
+        }
+      );
 
-  document.getElementById("clockDate").textContent =
-    d.toLocaleDateString(
-      "hy-AM",
-      {
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      }
-    );
+  document
+    .getElementById("clockDate")
+    .textContent =
+      d.toLocaleDateString(
+        "hy-AM",
+        {
+          weekday:"long",
+          day:"numeric",
+          month:"long",
+          year:"numeric"
+        }
+      );
 }
 
-setInterval(updateClock,1000);
+setInterval(
+  updateClock,
+  1000
+);
+
 updateClock();
+
+
+/* -------------------------
+   STATUS
+------------------------- */
 
 function setStatus(text){
 
-  document.getElementById("status").textContent = text;
+  document
+    .getElementById("status")
+    .textContent = text;
 }
 
-/* ԱՇԽԱՏԱԿՑԻ ՓՆՏՐՈՒՄ */
+
+/* -------------------------
+   ՓՆՏՐԵԼ ԱՇԽԱՏԱԿՑԻՆ
+------------------------- */
 
 async function findEmployee(){
 
   const input =
     document
-      .getElementById("nameInput")
+      .getElementById(
+        "nameInput"
+      )
       .value
       .trim();
 
   if(!input){
 
-    setStatus("Գրեք ձեր անունը");
+    setStatus(
+      "Գրեք ձեր անունը"
+    );
 
     return;
   }
 
   currentName = input;
-  currentDay = localDateKey();
+
+  currentDay =
+    localDateKey();
 
   localStorage.setItem(
     "employeeName",
@@ -586,23 +673,36 @@ async function findEmployee(){
   startAutoRefresh();
 }
 
-/* ՏՎՅԱԼՆԵՐԻ ԲԵՌՆՈՒՄ */
 
-async function loadEmployee(showLoading=false){
+/* -------------------------
+   ԲԵՌՆԵԼ ՏՎՅԱԼՆԵՐԸ
+------------------------- */
+
+async function loadEmployee(
+  showLoading=false
+){
 
   if(!currentName){
     return;
   }
 
-  const today = localDateKey();
+  const today =
+    localDateKey();
 
-  if(today !== currentDay){
+  if(
+    today !== currentDay
+  ){
+
     currentDay = today;
+
     currentSalesRow = null;
   }
 
   if(showLoading){
-    setStatus("Բեռնում է...");
+
+    setStatus(
+      "Բեռնում է..."
+    );
   }
 
   try{
@@ -611,29 +711,44 @@ async function loadEmployee(showLoading=false){
       await db
         .from("employees")
         .select("*")
-        .ilike("name",currentName)
-        .eq("active",true)
+        .ilike(
+          "name",
+          currentName
+        )
+        .eq(
+          "active",
+          true
+        )
         .maybeSingle();
 
     if(employeeRes.error){
       throw employeeRes.error;
     }
 
-    const employee = employeeRes.data;
+    const employee =
+      employeeRes.data;
 
     if(!employee){
 
       currentEmployee = null;
+
       currentPackages = [];
+
       currentSalesRow = null;
 
       document
-        .getElementById("result")
-        .classList.add("hidden");
+        .getElementById(
+          "result"
+        )
+        .classList
+        .add("hidden");
 
       document
-        .getElementById("notFound")
-        .classList.remove("hidden");
+        .getElementById(
+          "notFound"
+        )
+        .classList
+        .remove("hidden");
 
       setStatus("");
 
@@ -647,14 +762,22 @@ async function loadEmployee(showLoading=false){
 
       db
         .from("packages")
-        .select("price,bonus")
+        .select(
+          "price,bonus"
+        )
         .order("price"),
 
       db
         .from("daily_sales")
         .select("*")
-        .eq("employee_id",employee.id)
-        .eq("sale_date",currentDay)
+        .eq(
+          "employee_id",
+          employee.id
+        )
+        .eq(
+          "sale_date",
+          currentDay
+        )
         .maybeSingle()
 
     ]);
@@ -667,13 +790,21 @@ async function loadEmployee(showLoading=false){
       throw salesRes.error;
     }
 
-    currentEmployee = employee;
-    currentPackages = packagesRes.data || [];
-    currentSalesRow = salesRes.data || null;
+    currentEmployee =
+      employee;
+
+    currentPackages =
+      packagesRes.data || [];
+
+    currentSalesRow =
+      salesRes.data || null;
 
     document
-      .getElementById("notFound")
-      .classList.add("hidden");
+      .getElementById(
+        "notFound"
+      )
+      .classList
+      .add("hidden");
 
     renderEmployee();
 
@@ -681,7 +812,8 @@ async function loadEmployee(showLoading=false){
       "● Այսօրվա տվյալները թարմացված են"
     );
 
-  }catch(error){
+  }
+  catch(error){
 
     console.error(error);
 
@@ -691,7 +823,36 @@ async function loadEmployee(showLoading=false){
   }
 }
 
-/* ԷՋԻ ՑՈՒՑԱԴՐՈՒՄ */
+
+/* -------------------------
+   ՄՈՏԻՎԱՑԻԱ
+------------------------- */
+
+function getMotivation(
+  totalBonus
+){
+
+  if(
+    totalBonus >= 40000
+  ){
+
+    return "Դու գերազանցեցիր քեզ 🏆";
+  }
+
+  if(
+    totalBonus >= 20000
+  ){
+
+    return "Այ էսպես շարունակիր 🔥";
+  }
+
+  return "Սա քիչ է, ավելին կարող ես դու... 🚀";
+}
+
+
+/* -------------------------
+   ՑՈՒՑԱԴՐԵԼ ԱՐԴՅՈՒՆՔԸ
+------------------------- */
 
 function renderEmployee(){
 
@@ -700,124 +861,179 @@ function renderEmployee(){
   }
 
   document
-    .getElementById("result")
-    .classList.remove("hidden");
-
-  document.getElementById(
-    "employeeName"
-  ).textContent =
-    currentEmployee.name;
-
-  document.getElementById(
-    "dayText"
-  ).textContent =
-    "Այսօրվա արդյունք — " +
-    prettyDate(currentDay);
-
-  let totalSales = 0;
-  let totalBonus = 0;
-  let html = "";
-
-  currentPackages.forEach((p,i)=>{
-
-    const count =
-      currentSalesRow
-        ? Number(
-            currentSalesRow[fields[i]]
-          ) || 0
-        : 0;
-
-    const bonus =
-      Number(p.bonus) || 0;
-
-    const earned =
-      count * bonus;
-
-    totalSales += count;
-    totalBonus += earned;
-
-    html += `
-
-      <div class="package">
-
-        <div class="packageTop">
-
-          <div class="packagePrice">
-            ${money(p.price)}
-          </div>
-
-          <div class="countBox">
-
-            <div class="countNumber">
-              ${count}
-            </div>
-
-            <div class="countLabel">
-              ՎԱՃԱՌՔ
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="packageInfo">
-
-          <div class="infoBox">
-
-            <div class="infoLabel">
-              1 վաճառքից բոնուս
-            </div>
-
-            <div class="infoValue">
-              ${money(bonus)}
-            </div>
-
-          </div>
-
-          <div class="infoBox">
-
-            <div class="infoLabel">
-              Ստացած բոնուս
-            </div>
-
-            <div class="infoValue earned">
-              ${money(earned)}
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    `;
-  });
+    .getElementById(
+      "result"
+    )
+    .classList
+    .remove("hidden");
 
   document
-    .getElementById("packages")
+    .getElementById(
+      "employeeName"
+    )
+    .textContent =
+      currentEmployee.name;
+
+  document
+    .getElementById(
+      "dayText"
+    )
+    .textContent =
+      "Այսօրվա արդյունք — "
+      + prettyDate(
+          currentDay
+        );
+
+  let totalSales = 0;
+
+  let totalBonus = 0;
+
+  let html = "";
+
+  currentPackages.forEach(
+    (p,i)=>{
+
+      const count =
+        currentSalesRow
+          ? Number(
+              currentSalesRow[
+                fields[i]
+              ]
+            ) || 0
+          : 0;
+
+      const bonus =
+        Number(
+          p.bonus
+        ) || 0;
+
+      const earned =
+        count * bonus;
+
+      totalSales += count;
+
+      totalBonus += earned;
+
+      html += `
+
+        <div class="package">
+
+          <div class="packageTop">
+
+            <div
+              class="packagePrice"
+            >
+              ${money(p.price)}
+            </div>
+
+            <div class="countBox">
+
+              <div
+                class="countNumber"
+              >
+                ${count}
+              </div>
+
+              <div
+                class="countLabel"
+              >
+                ՎԱՃԱՌՔ
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="packageInfo">
+
+            <div class="infoBox">
+
+              <div
+                class="infoLabel"
+              >
+                1 վաճառքից բոնուս
+              </div>
+
+              <div
+                class="infoValue"
+              >
+                ${money(bonus)}
+              </div>
+
+            </div>
+
+            <div class="infoBox">
+
+              <div
+                class="infoLabel"
+              >
+                Ստացած բոնուս
+              </div>
+
+              <div
+                class="infoValue earned"
+              >
+                ${money(earned)}
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    }
+  );
+
+  document
+    .getElementById(
+      "packages"
+    )
     .innerHTML = html;
 
   document
-    .getElementById("totalSales")
-    .textContent = totalSales;
-
-  document
-    .getElementById("totalBonus")
-    .textContent = money(totalBonus);
-
-  document
-    .getElementById("updatedTime")
+    .getElementById(
+      "totalSales"
+    )
     .textContent =
-      new Date().toLocaleTimeString(
-        "hy-AM",
-        {
-          hour:"2-digit",
-          minute:"2-digit",
-          hour12:false
-        }
+      totalSales;
+
+  document
+    .getElementById(
+      "totalBonus"
+    )
+    .textContent =
+      money(totalBonus);
+
+  document
+    .getElementById(
+      "motivationText"
+    )
+    .textContent =
+      getMotivation(
+        totalBonus
       );
+
+  document
+    .getElementById(
+      "updatedTime"
+    )
+    .textContent =
+      new Date()
+        .toLocaleTimeString(
+          "hy-AM",
+          {
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:false
+          }
+        );
 }
 
-/* EXCEL */
+
+/* -------------------------
+   EXCEL
+------------------------- */
 
 function downloadMyResult(){
 
@@ -830,7 +1046,10 @@ function downloadMyResult(){
     return;
   }
 
-  if(typeof XLSX === "undefined"){
+  if(
+    typeof XLSX ===
+    "undefined"
+  ){
 
     alert(
       "Excel համակարգը չի բեռնվել։ Թարմացրեք էջը։"
@@ -840,11 +1059,14 @@ function downloadMyResult(){
   }
 
   let totalSales = 0;
+
   let totalBonus = 0;
 
   const rows = [
 
-    ["ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"],
+    [
+      "ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"
+    ],
 
     [],
 
@@ -855,7 +1077,9 @@ function downloadMyResult(){
 
     [
       "Ամսաթիվ",
-      prettyDate(currentDay)
+      prettyDate(
+        currentDay
+      )
     ],
 
     [],
@@ -869,31 +1093,38 @@ function downloadMyResult(){
 
   ];
 
-  currentPackages.forEach((p,i)=>{
+  currentPackages.forEach(
+    (p,i)=>{
 
-    const count =
-      currentSalesRow
-        ? Number(
-            currentSalesRow[fields[i]]
-          ) || 0
-        : 0;
+      const count =
+        currentSalesRow
+          ? Number(
+              currentSalesRow[
+                fields[i]
+              ]
+            ) || 0
+          : 0;
 
-    const bonus =
-      Number(p.bonus) || 0;
+      const bonus =
+        Number(
+          p.bonus
+        ) || 0;
 
-    const earned =
-      count * bonus;
+      const earned =
+        count * bonus;
 
-    totalSales += count;
-    totalBonus += earned;
+      totalSales += count;
 
-    rows.push([
-      p.price + " դրամ",
-      count,
-      bonus + " դրամ",
-      earned + " դրամ"
-    ]);
-  });
+      totalBonus += earned;
+
+      rows.push([
+        p.price + " դրամ",
+        count,
+        bonus + " դրամ",
+        earned + " դրամ"
+      ]);
+    }
+  );
 
   rows.push([]);
 
@@ -910,13 +1141,24 @@ function downloadMyResult(){
   rows.push([]);
 
   rows.push([
+    getMotivation(
+      totalBonus
+    )
+  ]);
+
+  rows.push([]);
+
+  rows.push([
     "Հաջորդ աշխատանքային օրվանդ կարող ես վաստակել ավելին..."
   ]);
 
   try{
 
     const ws =
-      XLSX.utils.aoa_to_sheet(rows);
+      XLSX.utils
+        .aoa_to_sheet(
+          rows
+        );
 
     ws["!cols"] = [
       {wch:42},
@@ -926,13 +1168,15 @@ function downloadMyResult(){
     ];
 
     const wb =
-      XLSX.utils.book_new();
+      XLSX.utils
+        .book_new();
 
-    XLSX.utils.book_append_sheet(
-      wb,
-      ws,
-      "Իմ արդյունքը"
-    );
+    XLSX.utils
+      .book_append_sheet(
+        wb,
+        ws,
+        "Իմ արդյունքը"
+      );
 
     const excelData =
       XLSX.write(
@@ -953,31 +1197,46 @@ function downloadMyResult(){
       );
 
     const url =
-      URL.createObjectURL(blob);
+      URL.createObjectURL(
+        blob
+      );
 
     const link =
-      document.createElement("a");
+      document
+        .createElement("a");
 
     link.href = url;
 
     link.download =
       "Քո Այսօրվա Արդյունքը.xlsx";
 
-    link.style.display = "none";
+    link.style.display =
+      "none";
 
-    document.body.appendChild(link);
+    document.body
+      .appendChild(link);
 
     link.click();
 
-    setTimeout(()=>{
+    setTimeout(
+      ()=>{
 
-      document.body.removeChild(link);
+        document.body
+          .removeChild(
+            link
+          );
 
-      URL.revokeObjectURL(url);
+        URL
+          .revokeObjectURL(
+            url
+          );
 
-    },3000);
+      },
+      3000
+    );
 
-  }catch(error){
+  }
+  catch(error){
 
     console.error(error);
 
@@ -987,49 +1246,78 @@ function downloadMyResult(){
   }
 }
 
-/* AUTO REFRESH */
+
+/* -------------------------
+   AUTO REFRESH
+------------------------- */
 
 function startAutoRefresh(){
 
   if(refreshTimer){
-    clearInterval(refreshTimer);
+
+    clearInterval(
+      refreshTimer
+    );
   }
 
   refreshTimer =
-    setInterval(()=>{
+    setInterval(
+      ()=>{
 
-      const today =
-        localDateKey();
+        const today =
+          localDateKey();
 
-      if(today !== currentDay){
+        if(
+          today !== currentDay
+        ){
 
-        currentDay = today;
-        currentSalesRow = null;
-      }
+          currentDay =
+            today;
 
-      if(currentName){
-        loadEmployee(false);
-      }
+          currentSalesRow =
+            null;
+        }
 
-    },5000);
+        if(currentName){
+
+          loadEmployee(
+            false
+          );
+        }
+
+      },
+      5000
+    );
 }
 
-/* ENTER */
+
+/* -------------------------
+   ENTER
+------------------------- */
 
 document
-  .getElementById("nameInput")
+  .getElementById(
+    "nameInput"
+  )
   .addEventListener(
     "keydown",
     event=>{
 
-      if(event.key === "Enter"){
+      if(
+        event.key ===
+        "Enter"
+      ){
+
         findEmployee();
       }
 
     }
   );
 
-/* ՀԻՇԵԼ ԱՆՈՒՆԸ */
+
+/* -------------------------
+   ՀԻՇԵԼ ԱՆՈՒՆԸ
+------------------------- */
 
 window.addEventListener(
   "load",
@@ -1039,19 +1327,26 @@ window.addEventListener(
       localDateKey();
 
     const saved =
-      localStorage.getItem(
-        "employeeName"
-      );
+      localStorage
+        .getItem(
+          "employeeName"
+        );
 
     if(saved){
 
-      currentName = saved;
+      currentName =
+        saved;
 
       document
-        .getElementById("nameInput")
-        .value = saved;
+        .getElementById(
+          "nameInput"
+        )
+        .value =
+          saved;
 
-      await loadEmployee(true);
+      await loadEmployee(
+        true
+      );
 
       startAutoRefresh();
     }
