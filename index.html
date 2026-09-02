@@ -2,14 +2,14 @@
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Իմ վաճառքները</title>
+<title>Իմ Վաճառքները</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -19,170 +19,188 @@ body{
 }
 
 .container{
-  max-width:520px;
+  max-width:600px;
   margin:auto;
-  padding:20px;
+  padding:18px;
 }
 
 .logo{
   display:block;
-  width:200px;
-  max-width:65%;
-  margin:5px auto 18px;
+  width:220px;
+  max-width:70%;
+  margin:8px auto 18px;
 }
 
 .header{
   text-align:center;
-  margin-bottom:22px;
+  margin-bottom:20px;
 }
 
 h1{
-  margin:0 0 7px;
-  font-size:27px;
+  margin:5px 0;
+  font-size:28px;
 }
 
 .subtitle{
-  color:#8f9db8;
+  color:#8e9ab3;
   font-size:14px;
 }
 
-.nameBox{
+.searchBox{
   background:#111c30;
-  border-radius:18px;
-  padding:15px;
-  margin-bottom:15px;
-}
-
-.nameLabel{
-  color:#8f9db8;
-  font-size:12px;
-  margin-bottom:7px;
+  border-radius:20px;
+  padding:16px;
+  margin-bottom:18px;
 }
 
 .nameInput{
   width:100%;
-  border:1px solid #31425e;
+  border:1px solid #2a3a55;
+  border-radius:13px;
   background:#0c1526;
-  color:#fff;
-  padding:14px;
-  border-radius:12px;
+  color:white;
+  padding:15px;
   font-size:17px;
-  font-weight:800;
   outline:none;
+  margin-bottom:10px;
 }
 
-.resultTop{
-  background:linear-gradient(135deg,#142b4a,#0c739e);
-  border-radius:22px;
-  padding:18px;
-  margin-bottom:18px;
+.searchButton{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  background:#25a8df;
+  color:white;
+  font-size:16px;
+  font-weight:900;
+  padding:15px;
 }
 
-.resultLabel{
+.status{
+  text-align:center;
+  margin:12px 0;
   font-size:13px;
-  opacity:.8;
+  color:#8e9ab3;
 }
 
-.moneyBig{
-  font-size:34px;
+.employeeName{
+  font-size:23px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+.summary{
+  background:linear-gradient(135deg,#142b4a,#0c739e);
+  border-radius:20px;
+  padding:17px;
+  margin-bottom:15px;
+}
+
+.summaryTitle{
+  font-size:12px;
+  opacity:.75;
+}
+
+.summaryValue{
+  font-size:28px;
   font-weight:900;
   margin-top:5px;
-  color:#67f2bf;
 }
 
-.salesCount{
+.summaryGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
   margin-top:12px;
-  font-size:14px;
-  color:#d0dbed;
 }
 
-.packageCard{
+.summaryItem{
+  background:rgba(0,0,0,.18);
+  border-radius:12px;
+  padding:12px;
+}
+
+.small{
+  font-size:11px;
+  opacity:.7;
+}
+
+.value{
+  font-size:17px;
+  font-weight:900;
+  margin-top:4px;
+}
+
+.package{
   background:#111c30;
   border-radius:17px;
-  padding:14px;
+  padding:15px;
   margin-bottom:10px;
 }
 
 .packageTop{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   gap:10px;
+  align-items:center;
 }
 
-.packageName{
-  font-size:18px;
+.packagePrice{
+  font-size:19px;
   font-weight:900;
 }
 
-.bonusText{
-  color:#7f91ad;
-  font-size:12px;
+.count{
+  background:#172238;
+  border-radius:11px;
+  min-width:64px;
+  text-align:center;
+  padding:10px;
+  font-size:20px;
+  font-weight:900;
+}
+
+.packageInfo{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.infoBox{
+  background:#0c1526;
+  border-radius:11px;
+  padding:10px;
+}
+
+.infoLabel{
+  color:#8391ab;
+  font-size:11px;
+}
+
+.infoValue{
+  font-size:15px;
+  font-weight:800;
   margin-top:4px;
 }
 
-.countInput{
-  width:80px;
-  border:1px solid #34435d;
-  background:#172238;
-  color:#fff;
-  padding:11px 5px;
-  border-radius:11px;
-  text-align:center;
-  font-size:18px;
-  font-weight:900;
-  outline:none;
-}
-
-.packageResult{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:12px;
-  padding-top:10px;
-  border-top:1px solid #23334c;
-  font-size:13px;
-  color:#8f9db8;
-}
-
-.packageMoney{
+.earned{
   color:#62e9b8;
-  font-size:16px;
-  font-weight:900;
 }
 
-.bottomBox{
-  background:#111c30;
-  border-radius:18px;
-  padding:16px;
-  margin-top:18px;
+.hidden{
+  display:none;
 }
 
-.bottomRow{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:8px 0;
-}
-
-.bottomTitle{
-  color:#8f9db8;
-}
-
-.bottomValue{
-  font-size:18px;
-  font-weight:900;
-}
-
-.saveNote{
+.notFound{
+  background:#311c27;
+  color:#ff9baa;
+  border-radius:14px;
+  padding:14px;
   text-align:center;
-  font-size:12px;
-  color:#697894;
-  margin-top:18px;
-  line-height:1.5;
+  margin-top:12px;
 }
 </style>
-
 </head>
 
 <body>
@@ -192,269 +210,401 @@ h1{
 <img src="IMG_7968.png" class="logo">
 
 <div class="header">
-  <h1>Իմ վաճառքները</h1>
+  <h1>Իմ Վաճառքները</h1>
   <div class="subtitle">
-    Գրիր վաճառքներդ և տես քո բոնուսը
+    Գրեք ձեր անունը և տեսեք ձեր արդյունքը
   </div>
 </div>
 
-<div class="nameBox">
-
-  <div class="nameLabel">
-    Աշխատակցի անուն
-  </div>
+<div class="searchBox">
 
   <input
-    id="employeeName"
+    id="nameInput"
     class="nameInput"
     type="text"
-    placeholder="Գրիր անունդ"
-    oninput="saveData()"
+    placeholder="Գրեք ձեր անունը"
+    autocomplete="off"
   >
 
-</div>
-
-<div class="resultTop">
-
-  <div class="resultLabel">
-    Քո ընդհանուր բոնուսը
-  </div>
-
-  <div class="moneyBig" id="totalBonus">
-    0 դրամ
-  </div>
-
-  <div class="salesCount" id="totalSales">
-    Ընդհանուր վաճառք՝ 0
-  </div>
+  <button
+    class="searchButton"
+    onclick="findEmployee()"
+  >
+    Տեսնել իմ արդյունքը
+  </button>
 
 </div>
 
-<div id="packages"></div>
+<div id="status" class="status"></div>
 
-<div class="bottomBox">
+<div id="result" class="hidden">
 
-  <div class="bottomRow">
-    <div class="bottomTitle">
-      Ընդհանուր վաճառք
+  <div class="employeeName" id="employeeName"></div>
+
+  <div class="summary">
+
+    <div class="summaryTitle">
+      Ընդհանուր ստացած բոնուս
     </div>
 
-    <div class="bottomValue" id="bottomSales">
-      0
-    </div>
-  </div>
-
-  <div class="bottomRow">
-    <div class="bottomTitle">
-      Ընդհանուր բոնուս
-    </div>
-
-    <div class="bottomValue" id="bottomBonus">
+    <div class="summaryValue" id="totalBonus">
       0 դրամ
     </div>
+
+    <div class="summaryGrid">
+
+      <div class="summaryItem">
+        <div class="small">
+          Ընդհանուր վաճառք
+        </div>
+
+        <div class="value" id="totalSales">
+          0
+        </div>
+      </div>
+
+      <div class="summaryItem">
+        <div class="small">
+          Վերջին թարմացում
+        </div>
+
+        <div class="value" id="updatedTime">
+          —
+        </div>
+      </div>
+
+    </div>
+
   </div>
+
+  <div id="packages"></div>
 
 </div>
 
-<div class="saveNote">
-  Տվյալները ավտոմատ պահպանվում են այս հեռախոսի browser-ում։
+<div id="notFound" class="notFound hidden">
+  Այս անունով աշխատակից չի գտնվել
 </div>
 
 </div>
 
 <script>
 
-const packages = [
-  {price:3900, bonus:1000},
-  {price:4900, bonus:1200},
-  {price:5900, bonus:2000},
-  {price:6900, bonus:1500},
-  {price:7900, bonus:3000},
-  {price:8900, bonus:2500}
-];
+const SUPABASE_URL =
+"https://pstoegdsngmkxggyaloz.supabase.co";
 
-let sales = loadSales();
+const SUPABASE_KEY =
+"sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
 
-function money(number){
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
+let currentName = "";
+let refreshTimer = null;
+
+function money(n){
   return new Intl.NumberFormat("hy-AM")
-    .format(number) + " դրամ";
+    .format(Number(n)||0) + " դրամ";
 }
 
-function loadSales(){
+function escapeHtml(text){
+  return String(text||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+function setStatus(text){
+  document.getElementById("status").textContent=text;
+}
+
+async function findEmployee(){
+
+  const input=
+    document.getElementById("nameInput")
+    .value.trim();
+
+  if(!input){
+
+    setStatus("Գրեք ձեր անունը");
+
+    return;
+  }
+
+  currentName=input;
+
+  localStorage.setItem(
+    "employeeName",
+    input
+  );
+
+  await loadEmployee(
+    input,
+    true
+  );
+
+  if(refreshTimer){
+    clearInterval(refreshTimer);
+  }
+
+  refreshTimer=setInterval(
+    async ()=>{
+      if(currentName){
+        await loadEmployee(
+          currentName,
+          false
+        );
+      }
+    },
+    5000
+  );
+}
+
+async function loadEmployee(
+  name,
+  showLoading=true
+){
+
+  if(showLoading){
+    setStatus("Բեռնում է...");
+  }
 
   try{
 
-    const saved =
-      JSON.parse(
-        localStorage.getItem("workerSales")
-      );
+    const [
+      employeeResponse,
+      packagesResponse
+    ] = await Promise.all([
 
-    if(
-      Array.isArray(saved) &&
-      saved.length === 6
-    ){
-      return saved;
+      db
+        .from("employees")
+        .select("*")
+        .ilike("name",name)
+        .maybeSingle(),
+
+      db
+        .from("packages")
+        .select("price,bonus")
+        .order("price")
+    ]);
+
+    if(employeeResponse.error){
+      throw employeeResponse.error;
     }
 
-  }catch(e){}
+    if(packagesResponse.error){
+      throw packagesResponse.error;
+    }
 
-  return [0,0,0,0,0,0];
+    const employee=
+      employeeResponse.data;
+
+    const packages=
+      packagesResponse.data || [];
+
+    if(!employee){
+
+      document
+        .getElementById("result")
+        .classList.add("hidden");
+
+      document
+        .getElementById("notFound")
+        .classList.remove("hidden");
+
+      setStatus("");
+
+      return;
+    }
+
+    document
+      .getElementById("notFound")
+      .classList.add("hidden");
+
+    renderEmployee(
+      employee,
+      packages
+    );
+
+    setStatus(
+      "● Տվյալները թարմացված են"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    setStatus(
+      "Չհաջողվեց բեռնել տվյալները"
+    );
+  }
 }
 
-function loadName(){
+function renderEmployee(
+  employee,
+  packages
+){
 
-  return localStorage.getItem("workerName") || "";
-}
+  const result=
+    document.getElementById("result");
 
-function renderPackages(){
+  result.classList.remove("hidden");
 
-  const container =
-    document.getElementById("packages");
+  document.getElementById(
+    "employeeName"
+  ).textContent=
+    employee.name;
 
-  container.innerHTML = "";
+  let totalSales=0;
+  let totalBonus=0;
 
-  packages.forEach((item,index)=>{
+  let html="";
 
-    const card =
-      document.createElement("div");
+  packages.forEach(p=>{
 
-    card.className = "packageCard";
+    const field=
+      "package_"+p.price;
 
-    card.innerHTML = `
+    const count=
+      Number(employee[field])||0;
 
-      <div class="packageTop">
+    const bonus=
+      Number(p.bonus)||0;
 
-        <div>
+    const earned=
+      count*bonus;
 
-          <div class="packageName">
-            ${money(item.price)}
+    totalSales+=count;
+    totalBonus+=earned;
+
+    html+=`
+
+      <div class="package">
+
+        <div class="packageTop">
+
+          <div class="packagePrice">
+            ${money(p.price)}
           </div>
 
-          <div class="bonusText">
-            1 վաճառքից՝ ${money(item.bonus)}
+          <div class="count">
+            ${count}
           </div>
 
         </div>
 
-        <input
-          class="countInput"
-          type="number"
-          min="0"
-          value="${sales[index]}"
-          oninput="changeSale(${index},this.value)"
-        >
+        <div class="packageInfo">
+
+          <div class="infoBox">
+
+            <div class="infoLabel">
+              1 վաճառքից
+            </div>
+
+            <div class="infoValue">
+              ${money(bonus)}
+            </div>
+
+          </div>
+
+          <div class="infoBox">
+
+            <div class="infoLabel">
+              Ստացած բոնուս
+            </div>
+
+            <div class="infoValue earned">
+              ${money(earned)}
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
-
-      <div class="packageResult">
-
-        <span>
-          Այս փաթեթից ստացել ես
-        </span>
-
-        <span
-          class="packageMoney"
-          id="packageMoney${index}"
-        >
-          0 դրամ
-        </span>
-
-      </div>
-
     `;
-
-    container.appendChild(card);
-
-  });
-
-  calculate();
-}
-
-function changeSale(index,value){
-
-  let number =
-    parseInt(value);
-
-  if(
-    isNaN(number) ||
-    number < 0
-  ){
-    number = 0;
-  }
-
-  sales[index] = number;
-
-  saveData();
-  calculate();
-}
-
-function calculate(){
-
-  let totalSales = 0;
-  let totalBonus = 0;
-
-  packages.forEach((item,index)=>{
-
-    const count =
-      Number(sales[index]) || 0;
-
-    const bonus =
-      count * item.bonus;
-
-    totalSales += count;
-    totalBonus += bonus;
-
-    document.getElementById(
-      "packageMoney" + index
-    ).textContent =
-      money(bonus);
-
   });
 
   document.getElementById(
-    "totalBonus"
-  ).textContent =
-    money(totalBonus);
+    "packages"
+  ).innerHTML=html;
 
   document.getElementById(
     "totalSales"
-  ).textContent =
-    "Ընդհանուր վաճառք՝ " +
+  ).textContent=
     totalSales;
 
   document.getElementById(
-    "bottomSales"
-  ).textContent =
-    totalSales;
-
-  document.getElementById(
-    "bottomBonus"
-  ).textContent =
+    "totalBonus"
+  ).textContent=
     money(totalBonus);
+
+  document.getElementById(
+    "updatedTime"
+  ).textContent=
+    new Date().toLocaleTimeString(
+      "hy-AM",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
 }
 
-function saveData(){
-
-  localStorage.setItem(
-    "workerSales",
-    JSON.stringify(sales)
-  );
-
-  localStorage.setItem(
-    "workerName",
-    document.getElementById(
-      "employeeName"
-    ).value
-  );
-}
+/* ENTER */
 
 document.getElementById(
-  "employeeName"
-).value =
-  loadName();
+  "nameInput"
+).addEventListener(
+  "keydown",
+  function(event){
 
-renderPackages();
+    if(event.key==="Enter"){
+      findEmployee();
+    }
+  }
+);
+
+/* REMEMBER NAME */
+
+window.addEventListener(
+  "load",
+  async ()=>{
+
+    const saved=
+      localStorage.getItem(
+        "employeeName"
+      );
+
+    if(saved){
+
+      document.getElementById(
+        "nameInput"
+      ).value=saved;
+
+      currentName=saved;
+
+      await loadEmployee(
+        saved,
+        true
+      );
+
+      refreshTimer=setInterval(
+        async ()=>{
+          if(currentName){
+            await loadEmployee(
+              currentName,
+              false
+            );
+          }
+        },
+        5000
+      );
+    }
+  }
+);
 
 </script>
 
