@@ -7,6 +7,7 @@
 <title>Իմ Վաճառքները</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
@@ -33,7 +34,7 @@ body{
 
 .header{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:16px;
 }
 
 h1{
@@ -44,6 +45,26 @@ h1{
 .subtitle{
   color:#8e9ab3;
   font-size:14px;
+}
+
+.clockBox{
+  background:#111c30;
+  border-radius:16px;
+  padding:13px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.clock{
+  font-size:28px;
+  font-weight:900;
+  color:#62e9b8;
+}
+
+.clockDate{
+  margin-top:4px;
+  color:#8e9ab3;
+  font-size:13px;
 }
 
 .searchBox{
@@ -216,6 +237,18 @@ h1{
   color:#62e9b8;
 }
 
+.downloadButton{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  background:#16794d;
+  color:#fff;
+  padding:16px;
+  font-size:16px;
+  font-weight:900;
+  margin:12px 0 22px;
+}
+
 .hidden{
   display:none;
 }
@@ -246,7 +279,22 @@ h1{
   <h1>Իմ Վաճառքները</h1>
 
   <div class="subtitle">
-    Գրեք ձեր անունը և տեսեք ձեր այսօրվա արդյունքը
+    Տես քո այսօրվա արդյունքը
+  </div>
+
+</div>
+
+<div class="clockBox">
+
+  <div
+    class="clock"
+    id="clock">
+    00:00:00
+  </div>
+
+  <div
+    class="clockDate"
+    id="clockDate">
   </div>
 
 </div>
@@ -339,6 +387,13 @@ h1{
 
   <div id="packages"></div>
 
+  <button
+    class="downloadButton"
+    onclick="downloadMyResult()"
+  >
+    📥 Ներբեռնել այսօրվա արդյունքը
+  </button>
+
 </div>
 
 <div
@@ -374,6 +429,9 @@ const fields=[
 
 let currentName="";
 let currentDay="";
+let currentEmployee=null;
+let currentPackages=[];
+let currentSalesRow=null;
 let refreshTimer=null;
 
 function money(n){
@@ -405,6 +463,36 @@ function prettyDate(dateString){
 
   return `${Number(parts[2])} ${months[Number(parts[1])-1]} ${parts[0]}`;
 }
+
+function updateClock(){
+
+  const d=new Date();
+
+  document.getElementById("clock").textContent=
+    d.toLocaleTimeString(
+      "hy-AM",
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:false
+      }
+    );
+
+  document.getElementById("clockDate").textContent=
+    d.toLocaleDateString(
+      "hy-AM",
+      {
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    );
+}
+
+setInterval(updateClock,1000);
+updateClock();
 
 function setStatus(text){
   document.getElementById("status").textContent=text;
@@ -466,6 +554,8 @@ async function loadEmployee(showLoading=false){
 
     if(!employee){
 
+      currentEmployee=null;
+
       document
         .getElementById("result")
         .classList.add("hidden");
@@ -506,15 +596,15 @@ async function loadEmployee(showLoading=false){
       throw salesRes.error;
     }
 
+    currentEmployee=employee;
+    currentPackages=packagesRes.data||[];
+    currentSalesRow=salesRes.data||null;
+
     document
       .getElementById("notFound")
       .classList.add("hidden");
 
-    renderEmployee(
-      employee,
-      packagesRes.data||[],
-      salesRes.data
-    );
+    renderEmployee();
 
     setStatus("● Այսօրվա տվյալները թարմացված են");
 
@@ -526,11 +616,13 @@ async function loadEmployee(showLoading=false){
   }
 }
 
-function renderEmployee(
-  employee,
-  packages,
-  salesRow
-){
+function renderEmployee(){
+
+  const employee=currentEmployee;
+  const packages=currentPackages;
+  const salesRow=currentSalesRow;
+
+  if(!employee) return;
 
   document
     .getElementById("result")
@@ -638,9 +730,109 @@ function renderEmployee(
         "hy-AM",
         {
           hour:"2-digit",
-          minute:"2-digit"
+          minute:"2-digit",
+          hour12:false
         }
       );
+}
+
+function downloadMyResult(){
+
+  if(!currentEmployee){
+    alert("Սկզբում բացեք ձեր արդյունքը");
+    return;
+  }
+
+  let totalSales=0;
+  let totalBonus=0;
+
+  const rows=[];
+
+  rows.push([
+    "ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"
+  ]);
+
+  rows.push([]);
+
+  rows.push([
+    "Աշխատակից",
+    currentEmployee.name
+  ]);
+
+  rows.push([
+    "Ամսաթիվ",
+    prettyDate(currentDay)
+  ]);
+
+  rows.push([]);
+
+  rows.push([
+    "Փաթեթ",
+    "Վաճառքների քանակ",
+    "Բոնուս 1 վաճառքից",
+    "Ստացած բոնուս"
+  ]);
+
+  currentPackages.forEach((p,i)=>{
+
+    const count=
+      currentSalesRow
+        ? Number(currentSalesRow[fields[i]])||0
+        : 0;
+
+    const bonus=Number(p.bonus)||0;
+    const earned=count*bonus;
+
+    totalSales+=count;
+    totalBonus+=earned;
+
+    rows.push([
+      p.price+" դրամ",
+      count,
+      bonus+" դրամ",
+      earned+" դրամ"
+    ]);
+  });
+
+  rows.push([]);
+
+  rows.push([
+    "Ընդհանուր վաճառքներ",
+    totalSales
+  ]);
+
+  rows.push([
+    "Ընդհանուր բոնուս",
+    totalBonus+" դրամ"
+  ]);
+
+  rows.push([]);
+
+  rows.push([
+    "Հաջորդ աշխատանքային օրվանդ կարող ես վաստակել ավելին..."
+  ]);
+
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+
+  ws["!cols"]=[
+    {wch:34},
+    {wch:20},
+    {wch:22},
+    {wch:22}
+  ];
+
+  const wb=XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    wb,
+    ws,
+    "Իմ արդյունքը"
+  );
+
+  XLSX.writeFile(
+    wb,
+    "Քո Այսօրվա Արդյունքը.xlsx"
+  );
 }
 
 function startAutoRefresh(){
@@ -650,6 +842,12 @@ function startAutoRefresh(){
   }
 
   refreshTimer=setInterval(()=>{
+
+    const today=localDateKey();
+
+    if(today!==currentDay){
+      currentDay=today;
+    }
 
     if(currentName){
       loadEmployee(false);
