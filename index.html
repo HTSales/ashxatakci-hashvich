@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="hy">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -24,11 +26,6 @@
   content="black-translucent"
 >
 
-<meta
-  name="apple-mobile-web-app-title"
-  content="HT Sales"
->
-
 <link
   rel="apple-touch-icon"
   href="./IMG_7968.png"
@@ -36,514 +33,532 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
 <style>
 
 *{
   box-sizing:border-box;
 }
 
-html,
 body{
+
   margin:0;
-  min-height:100%;
+
   background:#08101d;
+
   color:#fff;
+
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  Arial,
+  sans-serif;
+
 }
 
 .container{
-  width:100%;
-  max-width:720px;
+
+  max-width:700px;
+
   margin:auto;
+
   padding:18px;
+
 }
 
 .logo{
+
   display:block;
-  width:220px;
-  max-width:68%;
-  margin:4px auto 12px;
+
+  width:190px;
+
+  max-width:65%;
+
+  margin:8px auto 10px;
+
 }
 
-.header{
+.title{
+
   text-align:center;
-  margin-bottom:18px;
-}
 
-.header h1{
-  margin:0;
-  font-size:30px;
+  font-size:28px;
+
   font-weight:900;
+
 }
 
-.subtitle{
+.sub{
+
+  text-align:center;
+
+  color:#8794aa;
+
   margin-top:5px;
-  color:#8190ad;
+
 }
+
+
+.loginBox{
+
+  background:#111c30;
+
+  border-radius:22px;
+
+  padding:18px;
+
+  margin-top:20px;
+
+}
+
+.loginTitle{
+
+  font-size:20px;
+
+  font-weight:900;
+
+}
+
+.loginInfo{
+
+  color:#8c99ad;
+
+  line-height:1.5;
+
+  font-size:13px;
+
+  margin-top:7px;
+
+}
+
+.input{
+
+  width:100%;
+
+  margin-top:12px;
+
+  padding:14px;
+
+  background:#0b1526;
+
+  color:white;
+
+  border:1px solid #31405a;
+
+  border-radius:12px;
+
+  font-size:17px;
+
+}
+
+.loginBtn{
+
+  width:100%;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:14px;
+
+  margin-top:10px;
+
+  background:#1fa471;
+
+  color:white;
+
+  font-size:16px;
+
+  font-weight:900;
+
+}
+
+.backBtn{
+
+  width:100%;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:12px;
+
+  margin-top:8px;
+
+  background:#1b2941;
+
+  color:white;
+
+  font-weight:900;
+
+}
+
 
 .dateBox{
-  background:#111d31;
-  border-radius:26px;
-  padding:18px;
-  margin-bottom:18px;
+
+  background:#111c30;
+
+  border-radius:18px;
+
+  padding:14px;
+
   text-align:center;
+
+  margin-top:15px;
+
 }
 
 .date{
-  color:#9aa7c1;
+
+  color:#69e7b8;
+
+  font-weight:900;
+
   font-size:18px;
-  font-weight:700;
+
 }
 
 .clock{
-  margin-top:6px;
-  color:#fff;
-  font-size:20px;
-  font-weight:900;
+
+  color:#8794aa;
+
+  margin-top:5px;
+
 }
 
-.searchCard{
-  background:#111d31;
-  border-radius:24px;
+
+.employeeCard{
+
+  background:#111c30;
+
+  border-radius:22px;
+
   padding:18px;
-  margin-bottom:18px;
-}
 
-.searchTitle{
-  color:#9aa7c1;
-  font-size:14px;
-  margin-bottom:9px;
-}
+  margin-top:12px;
 
-.searchRow{
-  display:flex;
-  gap:8px;
-}
-
-.searchInput{
-  flex:1;
-  min-width:0;
-  border:1px solid #293853;
-  border-radius:13px;
-  padding:14px;
-  background:#091526;
-  color:white;
-  font-size:16px;
-  outline:none;
-}
-
-.searchBtn{
-  border:none;
-  border-radius:13px;
-  padding:0 18px;
-  background:#249fd4;
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.employeeArea{
-  display:none;
-}
-
-.employeeHeader{
-  background:#111d31;
-  border-radius:26px;
-  padding:20px;
-  margin-bottom:18px;
-}
-
-.employeeLabel{
-  color:#8d9ab5;
-  font-size:13px;
 }
 
 .employeeName{
-  margin-top:4px;
+
   font-size:29px;
+
   font-weight:900;
+
 }
 
-.updated{
-  color:#8d9ab5;
-  font-size:12px;
-  margin-top:7px;
-}
+.totalBonus{
 
-.summaryCard{
-  background:#111d31;
-  border-radius:26px;
-  padding:24px 18px;
-  text-align:center;
-  margin-bottom:18px;
-}
+  margin-top:13px;
 
-.summaryLabel{
-  color:#8d9ab5;
-  font-size:15px;
-  font-weight:700;
-}
-
-.summaryValue{
-  font-size:36px;
-  font-weight:900;
-  margin-top:8px;
-}
-
-.bonusCard{
-  background:linear-gradient(
+  background:
+  linear-gradient(
     135deg,
-    #164963,
-    #12747c
+    #104232,
+    #12654b
   );
-  border-radius:30px;
-  padding:27px 18px;
-  text-align:center;
-  margin-bottom:25px;
+
+  border-radius:18px;
+
+  padding:16px;
+
 }
 
-.bonusLabel{
-  color:#dceaf0;
-  font-size:16px;
-  font-weight:700;
+.totalLabel{
+
+  opacity:.8;
+
+  font-size:13px;
+
 }
 
-.bonusValue{
-  margin-top:8px;
-  font-size:40px;
+.totalValue{
+
+  font-size:32px;
+
   font-weight:900;
+
+  margin-top:5px;
+
+}
+
+.salesCount{
+
+  color:#7dffbb;
+
+  font-weight:900;
+
+  margin-top:6px;
+
 }
 
 .motivation{
+
+  margin-top:12px;
+
+  background:#17253c;
+
+  border-radius:15px;
+
+  padding:13px;
+
+  font-weight:900;
+
+}
+
+
+.packages{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:9px;
+
   margin-top:14px;
-  font-size:17px;
-  font-weight:900;
+
 }
 
-.packagesTitle{
-  margin:22px 0 14px;
-  font-size:29px;
-  font-weight:900;
-}
+.package{
 
-.packageCard{
-  background:#111d31;
-  border-radius:27px;
-  padding:20px;
-  margin-bottom:14px;
-}
+  background:#0b1526;
 
-.packageTop{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
+  border-radius:15px;
+
+  padding:13px;
+
 }
 
 .packageName{
-  font-size:23px;
-  font-weight:900;
-}
 
-.packagePrice{
-  margin-top:5px;
-  color:#8190ad;
   font-size:16px;
-  font-weight:700;
-}
 
-.countBox{
-  min-width:92px;
-  background:#091526;
-  border-radius:22px;
-  padding:14px 12px;
-  text-align:center;
-}
-
-.countNumber{
-  font-size:31px;
   font-weight:900;
+
 }
 
-.countLabel{
-  margin-top:2px;
-  color:#8190ad;
-  font-size:13px;
-  font-weight:700;
-}
+.price{
 
-.packageBottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:15px;
-  margin-top:18px;
+  color:#8492a8;
+
+  font-size:12px;
+
+  margin-top:3px;
+
 }
 
 .oneSale{
-  color:#8d9ab5;
-  font-size:16px;
-  font-weight:700;
+
+  color:#66caff;
+
+  font-size:12px;
+
+  margin-top:8px;
+
+}
+
+.count{
+
+  font-size:22px;
+
+  font-weight:900;
+
+  margin-top:8px;
+
 }
 
 .earned{
-  text-align:right;
-  color:#6eedb5;
-  font-size:18px;
+
+  color:#6ceeb0;
+
   font-weight:900;
+
+  font-size:12px;
+
+  margin-top:4px;
+
 }
 
-.downloadBtn{
+.logout{
+
+  margin-top:15px;
+
   width:100%;
-  border:none;
-  border-radius:16px;
-  padding:16px;
-  margin-top:14px;
-  background:#17794d;
-  color:#fff;
-  font-size:16px;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:13px;
+
+  background:#24334b;
+
+  color:white;
+
   font-weight:900;
-  cursor:pointer;
+
 }
 
-.changeBtn{
-  width:100%;
-  border:none;
-  border-radius:16px;
-  padding:14px;
-  margin-top:10px;
-  background:#192941;
-  color:#fff;
-  font-size:15px;
-  font-weight:800;
-  cursor:pointer;
-}
+.status{
 
-.message{
   text-align:center;
-  color:#8d9ab5;
-  padding:12px 5px;
-  font-size:13px;
+
+  color:#8794aa;
+
+  font-size:12px;
+
+  margin-top:12px;
+
 }
 
-.error{
-  color:#ff9292;
-}
 
-@media(max-width:500px){
+@media(max-width:450px){
 
-  .container{
-    padding:14px;
-  }
+  .packages{
 
-  .header h1{
-    font-size:27px;
-  }
+    grid-template-columns:
+      1fr;
 
-  .packagesTitle{
-    font-size:26px;
-  }
-
-  .packageName{
-    font-size:21px;
-  }
-
-  .bonusValue{
-    font-size:36px;
   }
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
 
 <img
   src="./IMG_7968.png"
   class="logo"
 >
 
-<div class="header">
 
-  <h1>
-    Իմ Վաճառքները
-  </h1>
+<div class="title">
 
-  <div class="subtitle">
-    Home Telecom
-  </div>
+Իմ Վաճառքները
 
 </div>
+
+
+<div class="sub">
+
+Home Telecom
+
+</div>
+
+
+
+<div id="loginArea">
+
+<div class="loginBox">
+
+<div class="loginTitle">
+
+Մուտք
+
+</div>
+
+<div
+  class="loginInfo"
+  id="loginInfo"
+>
+
+Գրիր քո անունը
+
+</div>
+
+
+<input
+  class="input"
+  id="nameInput"
+  placeholder="Անուն"
+/>
+
+
+<div id="codeArea"></div>
+
+
+<button
+  class="loginBtn"
+  onclick="checkName()"
+  id="mainButton"
+>
+
+Շարունակել
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div
+  id="resultArea"
+  style="display:none"
+>
 
 <div class="dateBox">
 
-  <div
-    class="date"
-    id="date"
-  ></div>
-
-  <div
-    class="clock"
-    id="clock"
-  ></div>
-
-</div>
-
 <div
-  class="searchCard"
-  id="searchCard"
->
-
-  <div class="searchTitle">
-    Գրեք Ձեր անունը
-  </div>
-
-  <div class="searchRow">
-
-    <input
-      id="nameInput"
-      class="searchInput"
-      placeholder="Անուն Ազգանուն"
-      autocomplete="off"
-    >
-
-    <button
-      class="searchBtn"
-      onclick="findEmployee()"
-    >
-      Բացել
-    </button>
-
-  </div>
-
-</div>
-
-<div
-  id="message"
-  class="message"
+  class="date"
+  id="dateText"
 ></div>
 
 <div
-  id="employeeArea"
-  class="employeeArea"
+  class="clock"
+  id="clockText"
+></div>
+
+</div>
+
+
+<div
+  id="employeeResult"
+></div>
+
+
+<button
+  class="logout"
+  onclick="logout()"
 >
 
-  <div class="employeeHeader">
+Դուրս գալ
 
-    <div class="employeeLabel">
-      Աշխատակից
-    </div>
-
-    <div
-      class="employeeName"
-      id="employeeName"
-    ></div>
-
-    <div
-      class="updated"
-      id="updated"
-    ></div>
-
-  </div>
-
-
-  <div class="summaryCard">
-
-    <div class="summaryLabel">
-      Ընդհանուր վաճառք
-    </div>
-
-    <div
-      class="summaryValue"
-      id="totalSales"
-    >
-      0
-    </div>
-
-  </div>
-
-
-  <div class="summaryCard">
-
-    <div class="summaryLabel">
-      Փաթեթների տեսակներ
-    </div>
-
-    <div
-      class="summaryValue"
-      id="packageTypes"
-    >
-      9
-    </div>
-
-  </div>
-
-
-  <div class="bonusCard">
-
-    <div class="bonusLabel">
-      Այսօրվա բոնուսը
-    </div>
-
-    <div
-      class="bonusValue"
-      id="totalBonus"
-    >
-      0 դրամ
-    </div>
-
-    <div
-      class="motivation"
-      id="motivation"
-    ></div>
-
-  </div>
-
-
-  <div class="packagesTitle">
-    Այսօրվա վաճառքները
-  </div>
-
-  <div id="packages"></div>
-
-
-  <button
-    class="downloadBtn"
-    onclick="downloadResult()"
-  >
-    📥 Ներբեռնել այսօրվա արդյունքը
-  </button>
-
-
-  <button
-    class="changeBtn"
-    onclick="changeEmployee()"
-  >
-    Փոխել աշխատակցին
-  </button>
+</button>
 
 </div>
 
+
+<div
+  class="status"
+  id="status"
+></div>
+
+
 </div>
+
 
 
 <script>
 
+
 const SUPABASE_URL =
 "https://pstoegdsngmkxggyaloz.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
+
 
 const db =
 supabase.createClient(
@@ -552,34 +567,35 @@ supabase.createClient(
 );
 
 
+
 const fieldByCode = {
 
   home_standard:
-    "package_6900",
+  "package_6900",
 
   home_premium:
-    "package_7900",
+  "package_7900",
 
   home_ultima:
-    "package_8900",
+  "package_8900",
 
   inet1:
-    "package_3900",
+  "package_3900",
 
   inet2:
-    "package_4900",
+  "package_4900",
 
   inet3:
-    "package_5900",
+  "package_5900",
 
   iptv1:
-    "package_iptv1",
+  "package_iptv1",
 
   iptv2:
-    "package_iptv2",
+  "package_iptv2",
 
   iptv3:
-    "package_iptv3"
+  "package_iptv3"
 
 };
 
@@ -587,79 +603,84 @@ const fieldByCode = {
 const packageOrder = [
 
   "home_standard",
+
   "home_premium",
+
   "home_ultima",
 
   "inet1",
+
   "inet2",
+
   "inet3",
 
   "iptv1",
+
   "iptv2",
+
   "iptv3"
 
 ];
 
 
-let currentEmployee = null;
-let currentPackages = [];
-let currentSales = null;
-let currentDay = "";
+let employee=null;
+
+let packages=[];
+
+let currentDate="";
+
+let mode="name";
 
 
-function money(value){
+function money(v){
 
   return new Intl.NumberFormat(
     "hy-AM"
   ).format(
-    Math.round(
-      Number(value) || 0
-    )
-  ) + " դրամ";
+    Math.round(Number(v)||0)
+  )+" դրամ";
 
 }
 
 
-function localDateKey(){
+function todayKey(){
 
-  const d = new Date();
+  const parts=
+  new Intl.DateTimeFormat(
+    "en-CA",
+    {
+      timeZone:"Asia/Yerevan",
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit"
+    }
+  ).formatToParts(new Date());
 
-  return [
-    d.getFullYear(),
-    String(
-      d.getMonth()+1
-    ).padStart(2,"0"),
-    String(
-      d.getDate()
-    ).padStart(2,"0")
-  ].join("-");
+  const map={};
 
+  parts.forEach(x=>{
+    map[x.type]=x.value;
+  });
+
+  return `${map.year}-${map.month}-${map.day}`;
 }
 
 
 function updateClock(){
 
-  const d = new Date();
+  const now=new Date();
 
-  document.getElementById(
-    "clock"
-  ).textContent =
-    d.toLocaleTimeString(
+  if(
+    document.getElementById(
+      "dateText"
+    )
+  ){
+
+    dateText.textContent=
+    now.toLocaleDateString(
       "hy-AM",
       {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit",
-        hour12:false
-      }
-    );
-
-  document.getElementById(
-    "date"
-  ).textContent =
-    d.toLocaleDateString(
-      "hy-AM",
-      {
+        timeZone:"Asia/Yerevan",
         weekday:"long",
         day:"numeric",
         month:"long",
@@ -667,300 +688,511 @@ function updateClock(){
       }
     );
 
-}
-
-
-function getMotivation(totalBonus){
-
-  if(totalBonus >= 40000){
-
-    return "Դու գերազանցեցիր քեզ 🏆";
-
-  }
-
-  if(totalBonus >= 20000){
-
-    return "Այ էսպես շարունակիր 🔥";
-
-  }
-
-  return "Սա քիչ է, ավելին կարող ես դու... 🚀";
-
-}
-
-
-function sortPackages(list){
-
-  return [...list].sort(
-    (a,b)=>
-      packageOrder.indexOf(a.code)
-      -
-      packageOrder.indexOf(b.code)
-  );
-
-}
-
-
-async function findEmployee(){
-
-  const input =
-    document.getElementById(
-      "nameInput"
+    clockText.textContent=
+    now.toLocaleTimeString(
+      "hy-AM",
+      {
+        timeZone:"Asia/Yerevan",
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:false
+      }
     );
 
-  const name =
-    input.value.trim();
+  }
+}
+
+
+async function checkName(){
+
+  if(mode==="code"){
+
+    loginWithCode();
+    return;
+
+  }
+
+  if(mode==="create"){
+
+    createCode();
+    return;
+
+  }
+
+
+  const name=
+    nameInput.value.trim();
+
 
   if(!name){
 
-    showMessage(
-      "Գրեք Ձեր անունը",
-      true
+    alert("Գրիր անունը");
+
+    return;
+
+  }
+
+
+  status.textContent=
+    "Ստուգվում է...";
+
+
+  const result=
+  await db
+  .from("employees")
+  .select("*")
+  .eq("active",true)
+  .ilike("name",name)
+  .maybeSingle();
+
+
+  if(result.error){
+
+    console.error(result.error);
+
+    status.textContent=
+      "Սխալ առաջացավ";
+
+    return;
+
+  }
+
+
+  if(!result.data){
+
+    alert(
+      "Այդ անունով աշխատակից չկա"
+    );
+
+    status.textContent="";
+
+    return;
+
+  }
+
+
+  employee=result.data;
+
+
+  nameInput.disabled=true;
+
+
+  if(
+    !employee.access_code
+  ){
+
+    mode="create";
+
+    loginInfo.textContent=
+      "Առաջին մուտքն է։ Ստեղծիր քո անձնական կոդը։ Հետագայում միշտ այս կոդով ես մտնելու։";
+
+    codeArea.innerHTML=`
+
+      <input
+        class="input"
+        id="codeInput"
+        type="password"
+        inputmode="numeric"
+        placeholder="Ստեղծիր կոդ"
+      >
+
+    `;
+
+    mainButton.textContent=
+      "Ստեղծել կոդ և մուտք գործել";
+
+  }
+
+  else{
+
+    mode="code";
+
+    loginInfo.textContent=
+      "Մուտքագրիր քո անձնական կոդը";
+
+    codeArea.innerHTML=`
+
+      <input
+        class="input"
+        id="codeInput"
+        type="password"
+        inputmode="numeric"
+        placeholder="Քո կոդը"
+      >
+
+    `;
+
+    mainButton.textContent=
+      "Մուտք գործել";
+
+  }
+
+
+  status.textContent="";
+
+}
+
+
+async function createCode(){
+
+  const code=
+    document.getElementById(
+      "codeInput"
+    ).value.trim();
+
+
+  if(code.length<4){
+
+    alert(
+      "Կոդը թող լինի առնվազն 4 նիշ"
     );
 
     return;
 
   }
 
-  showMessage(
-    "Տվյալները բեռնվում են..."
+
+  /*
+    Կրկին ստուգում ենք՝
+    արդյոք ուրիշ սարքից կոդ չի ստեղծվել
+    այս ընթացքում։
+  */
+
+  const check=
+  await db
+  .from("employees")
+  .select("access_code")
+  .eq("id",employee.id)
+  .single();
+
+
+  if(check.error){
+
+    alert(
+      "Չհաջողվեց ստուգել"
+    );
+
+    return;
+
+  }
+
+
+  if(check.data.access_code){
+
+    employee.access_code=
+      check.data.access_code;
+
+    mode="code";
+
+    alert(
+      "Քո կոդն արդեն ստեղծված է։ Մուտքագրիր այդ կոդը։"
+    );
+
+    loginInfo.textContent=
+      "Մուտքագրիր քո անձնական կոդը";
+
+    codeInput.value="";
+
+    mainButton.textContent=
+      "Մուտք գործել";
+
+    return;
+
+  }
+
+
+  const result=
+  await db
+  .from("employees")
+  .update({
+    access_code:code
+  })
+  .eq("id",employee.id)
+  .is("access_code",null)
+  .select()
+  .maybeSingle();
+
+
+  if(result.error){
+
+    console.error(
+      result.error
+    );
+
+    alert(
+      "Կոդը պահպանել չհաջողվեց"
+    );
+
+    return;
+
+  }
+
+
+  if(!result.data){
+
+    alert(
+      "Կոդն արդեն ստեղծվել է։ Մուտքագրիր քո կոդը։"
+    );
+
+    mode="code";
+
+    mainButton.textContent=
+      "Մուտք գործել";
+
+    return;
+
+  }
+
+
+  employee=
+    result.data;
+
+
+  localStorage.setItem(
+    "ht_employee_name",
+    employee.name
   );
 
-  try{
 
-    const employeeRes =
-      await db
-        .from("employees")
-        .select("*")
-        .ilike("name",name)
-        .eq("active",true)
-        .maybeSingle();
-
-    if(employeeRes.error){
-      throw employeeRes.error;
-    }
-
-    if(!employeeRes.data){
-
-      showMessage(
-        "Այս անունով աշխատակից չի գտնվել",
-        true
-      );
-
-      return;
-
-    }
-
-    currentEmployee =
-      employeeRes.data;
-
-    localStorage.setItem(
-      "ht_employee_name",
-      currentEmployee.name
-    );
-
-    await loadEmployeeData();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Չհաջողվեց բեռնել տվյալները",
-      true
-    );
-
-  }
+  openAccount();
 
 }
 
 
-async function loadEmployeeData(){
+async function loginWithCode(){
 
-  if(!currentEmployee){
-    return;
-  }
+  const code=
+    document.getElementById(
+      "codeInput"
+    ).value.trim();
 
-  currentDay =
-    localDateKey();
 
-  try{
+  if(!code){
 
-    const [
-      packagesRes,
-      salesRes
-    ] =
-    await Promise.all([
-
-      db
-        .from("packages")
-        .select("*"),
-
-      db
-        .from("daily_sales")
-        .select("*")
-        .eq(
-          "employee_id",
-          currentEmployee.id
-        )
-        .eq(
-          "sale_date",
-          currentDay
-        )
-        .maybeSingle()
-
-    ]);
-
-    if(packagesRes.error){
-      throw packagesRes.error;
-    }
-
-    if(salesRes.error){
-      throw salesRes.error;
-    }
-
-    currentPackages =
-      sortPackages(
-        packagesRes.data || []
-      );
-
-    currentSales =
-      salesRes.data || null;
-
-    renderEmployee();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Տվյալները թարմացնել չհաջողվեց",
-      true
+    alert(
+      "Գրիր կոդը"
     );
 
+    return;
+
   }
+
+
+  /*
+    Նորից բազայից ենք ստուգում։
+  */
+
+  const result=
+  await db
+  .from("employees")
+  .select("*")
+  .eq("id",employee.id)
+  .eq("active",true)
+  .single();
+
+
+  if(result.error){
+
+    alert(
+      "Չհաջողվեց մուտք գործել"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    String(
+      result.data.access_code
+    ) !==
+    String(code)
+  ){
+
+    alert(
+      "Կոդը սխալ է"
+    );
+
+    return;
+
+  }
+
+
+  employee=result.data;
+
+
+  localStorage.setItem(
+    "ht_employee_name",
+    employee.name
+  );
+
+
+  openAccount();
 
 }
 
 
-function renderEmployee(){
+async function openAccount(){
 
-  if(!currentEmployee){
+  loginArea.style.display=
+    "none";
+
+  resultArea.style.display=
+    "block";
+
+  currentDate=todayKey();
+
+  await loadResult();
+
+  updateClock();
+
+}
+
+
+async function loadResult(){
+
+  if(!employee)return;
+
+
+  currentDate=todayKey();
+
+
+  const [
+    pkgResult,
+    salesResult
+  ] =
+  await Promise.all([
+
+    db
+    .from("packages")
+    .select("*"),
+
+    db
+    .from("daily_sales")
+    .select("*")
+    .eq(
+      "employee_id",
+      employee.id
+    )
+    .eq(
+      "sale_date",
+      currentDate
+    )
+    .maybeSingle()
+
+  ]);
+
+
+  if(pkgResult.error){
+
+    status.textContent=
+      "Փաթեթները բեռնել չհաջողվեց";
+
     return;
+
   }
 
-  let totalSales = 0;
-  let totalBonus = 0;
 
-  let packagesHtml = "";
+  if(salesResult.error){
+
+    status.textContent=
+      "Վաճառքները բեռնել չհաջողվեց";
+
+    return;
+
+  }
 
 
-  currentPackages.forEach(pkg=>{
+  packages=
+  (pkgResult.data||[])
+  .sort(
+    (a,b)=>
+    packageOrder.indexOf(a.code)-
+    packageOrder.indexOf(b.code)
+  );
 
-    const field =
+
+  renderResult(
+    salesResult.data
+  );
+
+
+  status.textContent=
+    "● Թարմացված է";
+
+}
+
+
+function renderResult(row){
+
+  let sales=0;
+
+  let bonus=0;
+
+  let packagesHTML="";
+
+
+  packages.forEach(pkg=>{
+
+    const field=
       fieldByCode[pkg.code];
 
-    if(!field){
-      return;
-    }
+
+    if(!field)return;
 
 
-    const count =
-      currentSales
-        ?
-        Number(
-          currentSales[field]
-        ) || 0
-        :
-        0;
+    const count=
+      Number(
+        row ? row[field] : 0
+      )||0;
 
 
     /*
-      ԱՅՍՏԵՂ ՕԳՏԱԳՈՐԾՎՈՒՄ Է
-      ՄԻԱՅՆ ԱՇԽԱՏԱԿՑԻ ԲՈՆՈՒՍԸ
+      Աշխատակցի էջը օգտագործում է
+      ՄԻԱՅՆ employee_bonus-ը։
     */
 
-    const employeeBonus =
+    const perSale=
       Number(
         pkg.employee_bonus
-      ) || 0;
+      )||0;
 
 
-    const earned =
-      count *
-      employeeBonus;
+    const earned=
+      count * perSale;
 
 
-    totalSales +=
-      count;
+    sales += count;
+
+    bonus += earned;
 
 
-    totalBonus +=
-      earned;
+    packagesHTML+=`
 
+      <div class="package">
 
-    packagesHtml += `
-
-      <div class="packageCard">
-
-        <div class="packageTop">
-
-          <div>
-
-            <div class="packageName">
-
-              ${escapeHtml(
-                pkg.name || pkg.code
-              )}
-
-            </div>
-
-            <div class="packagePrice">
-
-              ${money(pkg.price)}
-
-            </div>
-
-          </div>
-
-
-          <div class="countBox">
-
-            <div class="countNumber">
-
-              ${count}
-
-            </div>
-
-            <div class="countLabel">
-
-              վաճառք
-
-            </div>
-
-          </div>
-
+        <div class="packageName">
+          ${escapeHTML(
+            pkg.name||pkg.code
+          )}
         </div>
 
+        <div class="price">
+          ${money(pkg.price)}
+        </div>
 
-        <div class="packageBottom">
+        <div class="oneSale">
+          1 վաճառքից՝
+          ${money(perSale)}
+        </div>
 
-          <div class="oneSale">
+        <div class="count">
+          ${count}
+        </div>
 
-            1 վաճառքից՝
-            ${money(employeeBonus)}
-
-          </div>
-
-
-          <div class="earned">
-
-            + ${money(earned)}
-
-          </div>
-
+        <div class="earned">
+          +${money(earned)}
         </div>
 
       </div>
@@ -970,374 +1202,133 @@ function renderEmployee(){
   });
 
 
-  document.getElementById(
-    "employeeName"
-  ).textContent =
-    currentEmployee.name;
+  let motivation="";
 
 
-  document.getElementById(
-    "totalSales"
-  ).textContent =
-    totalSales;
+  if(bonus<20000){
 
+    motivation=
+      "Սա քիչ է, ավելին կարող ես դու... 🚀";
 
-  document.getElementById(
-    "packageTypes"
-  ).textContent =
-    currentPackages.length;
+  }
+  else if(bonus<40000){
 
+    motivation=
+      "Այ էսպես շարունակիր 🔥";
 
-  document.getElementById(
-    "totalBonus"
-  ).textContent =
-    money(totalBonus);
+  }
+  else{
 
-
-  document.getElementById(
-    "motivation"
-  ).textContent =
-    getMotivation(
-      totalBonus
-    );
-
-
-  document.getElementById(
-    "packages"
-  ).innerHTML =
-    packagesHtml;
-
-
-  let updatedText =
-    "Այսօրվա տվյալներ";
-
-
-  if(
-    currentSales &&
-    currentSales.updated_at
-  ){
-
-    const d =
-      new Date(
-        currentSales.updated_at
-      );
-
-    updatedText =
-      "Թարմացված՝ " +
-      d.toLocaleTimeString(
-        "hy-AM",
-        {
-          hour:"2-digit",
-          minute:"2-digit",
-          hour12:false
-        }
-      );
+    motivation=
+      "Դու գերազանցեցիր քեզ 🏆";
 
   }
 
 
-  document.getElementById(
-    "updated"
-  ).textContent =
-    updatedText;
+  employeeResult.innerHTML=`
+
+    <div class="employeeCard">
+
+      <div class="employeeName">
+
+        ${escapeHTML(
+          employee.name
+        )}
+
+      </div>
 
 
-  document.getElementById(
-    "searchCard"
-  ).style.display =
-    "none";
+      <div class="totalBonus">
+
+        <div class="totalLabel">
+          Այսօրվա քո բոնուսը
+        </div>
+
+        <div class="totalValue">
+          ${money(bonus)}
+        </div>
+
+        <div class="salesCount">
+          ${sales} վաճառք
+        </div>
+
+      </div>
 
 
-  document.getElementById(
-    "employeeArea"
-  ).style.display =
+      <div class="motivation">
+        ${motivation}
+      </div>
+
+
+      <div class="packages">
+        ${packagesHTML}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function logout(){
+
+  employee=null;
+
+  mode="name";
+
+  nameInput.disabled=false;
+
+  nameInput.value="";
+
+  codeArea.innerHTML="";
+
+  loginInfo.textContent=
+    "Գրիր քո անունը";
+
+  mainButton.textContent=
+    "Շարունակել";
+
+  loginArea.style.display=
     "block";
 
-
-  showMessage("");
-
-}
-
-
-function changeEmployee(){
-
-  localStorage.removeItem(
-    "ht_employee_name"
-  );
-
-  currentEmployee = null;
-  currentSales = null;
-
-  document.getElementById(
-    "employeeArea"
-  ).style.display =
+  resultArea.style.display=
     "none";
 
-  document.getElementById(
-    "searchCard"
-  ).style.display =
-    "block";
-
-  document.getElementById(
-    "nameInput"
-  ).value =
-    "";
-
-  showMessage("");
+  status.textContent="";
 
 }
 
 
-function downloadResult(){
-
-  if(!currentEmployee){
-    return;
-  }
-
-  let totalSales = 0;
-  let totalBonus = 0;
-
-
-  const rows = [
-
-    [
-      "ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"
-    ],
-
-    [],
-
-    [
-      "Աշխատակից",
-      currentEmployee.name
-    ],
-
-    [
-      "Ամսաթիվ",
-      currentDay
-    ],
-
-    [],
-
-    [
-      "Փաթեթ",
-      "Գին",
-      "Վաճառք",
-      "1 վաճառքից բոնուս",
-      "Վաստակած բոնուս"
-    ]
-
-  ];
-
-
-  currentPackages.forEach(pkg=>{
-
-    const field =
-      fieldByCode[pkg.code];
-
-    if(!field){
-      return;
-    }
-
-
-    const count =
-      currentSales
-        ?
-        Number(
-          currentSales[field]
-        ) || 0
-        :
-        0;
-
-
-    const employeeBonus =
-      Number(
-        pkg.employee_bonus
-      ) || 0;
-
-
-    const earned =
-      count *
-      employeeBonus;
-
-
-    totalSales +=
-      count;
-
-
-    totalBonus +=
-      earned;
-
-
-    rows.push([
-
-      pkg.name || pkg.code,
-
-      Number(
-        pkg.price || 0
-      ),
-
-      count,
-
-      employeeBonus,
-
-      earned
-
-    ]);
-
-  });
-
-
-  rows.push([]);
-
-
-  rows.push([
-
-    "Ընդհանուր վաճառք",
-
-    totalSales
-
-  ]);
-
-
-  rows.push([
-
-    "Իմ ընդհանուր բոնուսը",
-
-    totalBonus
-
-  ]);
-
-
-  rows.push([]);
-
-
-  rows.push([
-
-    getMotivation(
-      totalBonus
-    )
-
-  ]);
-
-
-  const ws =
-    XLSX.utils.aoa_to_sheet(
-      rows
-    );
-
-
-  ws["!cols"] = [
-
-    {wch:24},
-    {wch:14},
-    {wch:12},
-    {wch:22},
-    {wch:22}
-
-  ];
-
-
-  const wb =
-    XLSX.utils.book_new();
-
-
-  XLSX.utils.book_append_sheet(
-    wb,
-    ws,
-    "Արդյունք"
-  );
-
-
-  XLSX.writeFile(
-    wb,
-    "Քո Այսօրվա Արդյունքը.xlsx"
-  );
+function escapeHTML(t){
+
+  return String(t)
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
 
 }
 
 
-function showMessage(
-  text,
-  isError=false
-){
+/*
+  Եթե նախկինում անունը գրել է,
+  հաջորդ անգամ անունը ավտոմատ լրացվում է։
+*/
 
-  const el =
-    document.getElementById(
-      "message"
-    );
+const savedName=
+localStorage.getItem(
+  "ht_employee_name"
+);
 
-  el.textContent =
-    text;
 
-  el.className =
-    isError
-      ?
-      "message error"
-      :
-      "message";
+if(savedName){
+
+  nameInput.value=
+    savedName;
 
 }
-
-
-function escapeHtml(text){
-
-  return String(text)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-async function autoRefresh(){
-
-  if(!currentEmployee){
-    return;
-  }
-
-
-  const newDay =
-    localDateKey();
-
-
-  if(
-    newDay !== currentDay
-  ){
-
-    currentDay =
-      newDay;
-
-  }
-
-
-  await loadEmployeeData();
-
-}
-
-
-updateClock();
 
 
 setInterval(
@@ -1347,37 +1338,49 @@ setInterval(
 
 
 setInterval(
-  autoRefresh,
+  ()=>{
+
+    if(employee){
+
+      const newDate=
+        todayKey();
+
+      if(
+        newDate !==
+        currentDate
+      ){
+
+        loadResult();
+
+      }
+
+    }
+
+  },
   5000
 );
 
 
-window.addEventListener(
-  "load",
-  async ()=>{
+/*
+  Բացված ժամանակ ավտոմատ թարմացում։
+*/
 
-    const savedName =
-      localStorage.getItem(
-        "ht_employee_name"
-      );
+setInterval(
+  ()=>{
 
+    if(employee){
 
-    if(savedName){
-
-      document.getElementById(
-        "nameInput"
-      ).value =
-        savedName;
-
-
-      await findEmployee();
+      loadResult();
 
     }
 
-  }
+  },
+  5000
 );
+
 
 </script>
 
 </body>
+
 </html>
