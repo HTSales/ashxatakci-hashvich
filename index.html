@@ -2,16 +2,14 @@
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Իմ Վաճառքները</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -26,24 +24,19 @@ body{
   padding:18px;
 }
 
-/* LOGO */
-
 .logo{
   display:block;
   width:230px;
   max-width:75%;
-  height:auto;
-  margin:10px auto 20px;
+  margin:8px auto 18px;
 }
-
-/* HEADER */
 
 .header{
   text-align:center;
   margin-bottom:20px;
 }
 
-.header h1{
+h1{
   margin:0 0 7px;
   font-size:28px;
 }
@@ -52,8 +45,6 @@ body{
   color:#8e9ab3;
   font-size:14px;
 }
-
-/* SEARCH */
 
 .searchBox{
   background:#111c30;
@@ -93,8 +84,6 @@ body{
   color:#8e9ab3;
 }
 
-/* WELCOME */
-
 .welcome{
   background:linear-gradient(135deg,#162842,#101b2e);
   border-radius:20px;
@@ -114,7 +103,11 @@ body{
   font-weight:800;
 }
 
-/* TOTAL */
+.dayText{
+  margin-top:8px;
+  color:#9aa8c8;
+  font-size:13px;
+}
 
 .summary{
   background:linear-gradient(135deg,#142b4a,#0c739e);
@@ -158,8 +151,6 @@ body{
   margin-top:4px;
 }
 
-/* PACKAGES */
-
 .package{
   background:#111c30;
   border-radius:17px;
@@ -171,7 +162,6 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
 }
 
 .packagePrice{
@@ -245,197 +235,215 @@ body{
 
 <div class="container">
 
-  <!-- ԼՈԳՈՆ -->
-  <img
-    src="./IMG_7968.png"
-    class="logo"
-    alt="Home Telecom"
+<img
+  src="./IMG_7968.png"
+  class="logo"
+  alt="Home Telecom"
+>
+
+<div class="header">
+
+  <h1>Իմ Վաճառքները</h1>
+
+  <div class="subtitle">
+    Գրեք ձեր անունը և տեսեք ձեր այսօրվա արդյունքը
+  </div>
+
+</div>
+
+<div class="searchBox">
+
+  <input
+    id="nameInput"
+    class="nameInput"
+    placeholder="Գրեք ձեր անունը"
+    autocomplete="off"
   >
 
-  <div class="header">
-    <h1>Իմ Վաճառքները</h1>
+  <button
+    class="searchButton"
+    onclick="findEmployee()"
+  >
+    Տեսնել իմ արդյունքը
+  </button>
 
-    <div class="subtitle">
-      Գրեք ձեր անունը և տեսեք ձեր արդյունքը
-    </div>
-  </div>
+</div>
 
-  <div class="searchBox">
+<div id="status" class="status"></div>
 
-    <input
-      id="nameInput"
-      class="nameInput"
-      type="text"
-      placeholder="Գրեք ձեր անունը"
-      autocomplete="off"
-    >
+<div id="result" class="hidden">
 
-    <button
-      class="searchButton"
-      onclick="findEmployee()"
-    >
-      Տեսնել իմ արդյունքը
-    </button>
+  <div class="welcome">
 
-  </div>
-
-  <div id="status" class="status"></div>
-
-  <div id="result" class="hidden">
-
-    <!-- ԱՆՈՒՆ + ՄՈՏԻՎԱՑԻԱ -->
-
-    <div class="welcome">
-
-      <div
-        class="employeeName"
-        id="employeeName">
-      </div>
-
-      <div class="motivation">
-        Դու կարող ես ավելին... 🚀
-      </div>
-
+    <div
+      class="employeeName"
+      id="employeeName">
     </div>
 
-    <!-- ԸՆԴՀԱՆՈՒՐ ԱՐԴՅՈՒՆՔ -->
+    <div class="motivation">
+      Դու կարող ես ավելին... 🚀
+    </div>
 
-    <div class="summary">
+    <div
+      class="dayText"
+      id="dayText">
+    </div>
 
-      <div class="summaryTitle">
-        Ընդհանուր ստացած բոնուս
-      </div>
+  </div>
 
-      <div
-        class="summaryValue"
-        id="totalBonus"
-      >
-        0 դրամ
-      </div>
+  <div class="summary">
 
-      <div class="summaryGrid">
+    <div class="summaryTitle">
+      Այսօրվա ստացած բոնուս
+    </div>
 
-        <div class="summaryItem">
-          <div class="small">
-            Ընդհանուր վաճառք
-          </div>
+    <div
+      class="summaryValue"
+      id="totalBonus">
+      0 դրամ
+    </div>
 
-          <div
-            class="value"
-            id="totalSales"
-          >
-            0
-          </div>
+    <div class="summaryGrid">
+
+      <div class="summaryItem">
+
+        <div class="small">
+          Այսօրվա վաճառք
         </div>
 
-        <div class="summaryItem">
-          <div class="small">
-            Վերջին թարմացում
-          </div>
-
-          <div
-            class="value"
-            id="updatedTime"
-          >
-            —
-          </div>
+        <div
+          class="value"
+          id="totalSales">
+          0
         </div>
 
       </div>
 
+      <div class="summaryItem">
+
+        <div class="small">
+          Վերջին թարմացում
+        </div>
+
+        <div
+          class="value"
+          id="updatedTime">
+          —
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- ՓԱԹԵԹՆԵՐ -->
-
-    <div id="packages"></div>
-
   </div>
 
-  <div
-    id="notFound"
-    class="notFound hidden"
-  >
-    Այս անունով աշխատակից չի գտնվել
-  </div>
+  <div id="packages"></div>
+
+</div>
+
+<div
+  id="notFound"
+  class="notFound hidden"
+>
+  Այս անունով աշխատակից չի գտնվել
+</div>
 
 </div>
 
 <script>
 
-const SUPABASE_URL =
+const SUPABASE_URL=
 "https://pstoegdsngmkxggyaloz.supabase.co";
 
-const SUPABASE_KEY =
+const SUPABASE_KEY=
 "sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
 
-const db = supabase.createClient(
+const db=supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
-let currentName = "";
-let refreshTimer = null;
+const fields=[
+  "package_3900",
+  "package_4900",
+  "package_5900",
+  "package_6900",
+  "package_7900",
+  "package_8900"
+];
 
-function money(number){
+let currentName="";
+let currentDay="";
+let refreshTimer=null;
+
+function money(n){
+
   return new Intl.NumberFormat("hy-AM")
-    .format(Number(number) || 0) + " դրամ";
+    .format(Number(n)||0)+" դրամ";
+}
+
+function localDateKey(){
+
+  const d=new Date();
+
+  return[
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")
+  ].join("-");
+}
+
+function prettyDate(dateString){
+
+  const months=[
+    "Հունվար","Փետրվար","Մարտ","Ապրիլ",
+    "Մայիս","Հունիս","Հուլիս","Օգոստոս",
+    "Սեպտեմբեր","Հոկտեմբեր","Նոյեմբեր","Դեկտեմբեր"
+  ];
+
+  const parts=dateString.split("-");
+
+  return `${Number(parts[2])} ${months[Number(parts[1])-1]} ${parts[0]}`;
 }
 
 function setStatus(text){
-  document.getElementById("status").textContent = text;
+  document.getElementById("status").textContent=text;
 }
-
-/* ԱՇԽԱՏԱԿՑԻ ՈՐՈՆՈՒՄ */
 
 async function findEmployee(){
 
-  const input = document
+  const input=document
     .getElementById("nameInput")
-    .value
-    .trim();
+    .value.trim();
 
   if(!input){
+
     setStatus("Գրեք ձեր անունը");
     return;
   }
 
-  currentName = input;
+  currentName=input;
+  currentDay=localDateKey();
 
   localStorage.setItem(
     "employeeName",
     input
   );
 
-  await loadEmployee(
-    input,
-    true
-  );
+  await loadEmployee(true);
 
-  if(refreshTimer){
-    clearInterval(refreshTimer);
-  }
-
-  refreshTimer = setInterval(
-    function(){
-
-      if(currentName){
-        loadEmployee(
-          currentName,
-          false
-        );
-      }
-
-    },
-    5000
-  );
+  startAutoRefresh();
 }
 
-/* SUPABASE-ԻՑ ՏՎՅԱԼՆԵՐ */
+async function loadEmployee(showLoading=false){
 
-async function loadEmployee(
-  name,
-  showLoading
-){
+  if(!currentName) return;
+
+  const today=localDateKey();
+
+  if(today!==currentDay){
+    currentDay=today;
+  }
 
   if(showLoading){
     setStatus("Բեռնում է...");
@@ -443,114 +451,119 @@ async function loadEmployee(
 
   try{
 
-    const employeeResponse =
-      await db
-        .from("employees")
-        .select("*")
-        .ilike("name", name)
-        .maybeSingle();
+    const employeeRes=await db
+      .from("employees")
+      .select("*")
+      .ilike("name",currentName)
+      .eq("active",true)
+      .maybeSingle();
 
-    if(employeeResponse.error){
-      throw employeeResponse.error;
+    if(employeeRes.error){
+      throw employeeRes.error;
     }
 
-    const packagesResponse =
-      await db
-        .from("packages")
-        .select("price,bonus")
-        .order("price");
-
-    if(packagesResponse.error){
-      throw packagesResponse.error;
-    }
-
-    const employee =
-      employeeResponse.data;
-
-    const packageList =
-      packagesResponse.data || [];
+    const employee=employeeRes.data;
 
     if(!employee){
 
       document
         .getElementById("result")
-        .classList
-        .add("hidden");
+        .classList.add("hidden");
 
       document
         .getElementById("notFound")
-        .classList
-        .remove("hidden");
+        .classList.remove("hidden");
 
       setStatus("");
 
       return;
     }
 
+    const [
+      packagesRes,
+      salesRes
+    ]=await Promise.all([
+
+      db
+        .from("packages")
+        .select("price,bonus")
+        .order("price"),
+
+      db
+        .from("daily_sales")
+        .select("*")
+        .eq("employee_id",employee.id)
+        .eq("sale_date",currentDay)
+        .maybeSingle()
+
+    ]);
+
+    if(packagesRes.error){
+      throw packagesRes.error;
+    }
+
+    if(salesRes.error){
+      throw salesRes.error;
+    }
+
     document
       .getElementById("notFound")
-      .classList
-      .add("hidden");
+      .classList.add("hidden");
 
     renderEmployee(
       employee,
-      packageList
+      packagesRes.data||[],
+      salesRes.data
     );
 
-    setStatus(
-      "● Տվյալները թարմացված են"
-    );
+    setStatus("● Այսօրվա տվյալները թարմացված են");
 
   }catch(error){
 
     console.error(error);
 
-    setStatus(
-      "Չհաջողվեց բեռնել տվյալները"
-    );
+    setStatus("Չհաջողվեց բեռնել տվյալները");
   }
 }
 
-/* ՑՈՒՅՑ ՏԱԼ ԱՐԴՅՈՒՆՔԸ */
-
 function renderEmployee(
   employee,
-  packageList
+  packages,
+  salesRow
 ){
 
   document
     .getElementById("result")
-    .classList
-    .remove("hidden");
+    .classList.remove("hidden");
 
-  document
-    .getElementById("employeeName")
-    .textContent =
-      employee.name;
+  document.getElementById(
+    "employeeName"
+  ).textContent=employee.name;
 
-  let totalSales = 0;
-  let totalBonus = 0;
+  document.getElementById(
+    "dayText"
+  ).textContent=
+    "Այսօրվա արդյունք — "+prettyDate(currentDay);
 
-  let html = "";
+  let totalSales=0;
+  let totalBonus=0;
+  let html="";
 
-  packageList.forEach(function(p){
+  packages.forEach((p,i)=>{
 
-    const field =
-      "package_" + p.price;
+    const count=
+      salesRow
+        ? Number(salesRow[fields[i]])||0
+        : 0;
 
-    const count =
-      Number(employee[field]) || 0;
+    const bonus=Number(p.bonus)||0;
 
-    const bonus =
-      Number(p.bonus) || 0;
+    const earned=count*bonus;
 
-    const earned =
-      count * bonus;
+    totalSales+=count;
+    totalBonus+=earned;
 
-    totalSales += count;
-    totalBonus += earned;
-
-    html += `
+    html+=`
 
       <div class="package">
 
@@ -603,27 +616,24 @@ function renderEmployee(
         </div>
 
       </div>
-
     `;
   });
 
   document
     .getElementById("packages")
-    .innerHTML = html;
+    .innerHTML=html;
 
   document
     .getElementById("totalSales")
-    .textContent =
-      totalSales;
+    .textContent=totalSales;
 
   document
     .getElementById("totalBonus")
-    .textContent =
-      money(totalBonus);
+    .textContent=money(totalBonus);
 
   document
     .getElementById("updatedTime")
-    .textContent =
+    .textContent=
       new Date().toLocaleTimeString(
         "hy-AM",
         {
@@ -633,59 +643,56 @@ function renderEmployee(
       );
 }
 
-/* ENTER-ՈՎ ՄՈՒՏՔ */
+function startAutoRefresh(){
+
+  if(refreshTimer){
+    clearInterval(refreshTimer);
+  }
+
+  refreshTimer=setInterval(()=>{
+
+    if(currentName){
+      loadEmployee(false);
+    }
+
+  },5000);
+}
 
 document
   .getElementById("nameInput")
   .addEventListener(
     "keydown",
-    function(event){
+    event=>{
 
-      if(event.key === "Enter"){
+      if(event.key==="Enter"){
         findEmployee();
       }
 
     }
   );
 
-/* ՀԻՇԵԼ ԱՇԽԱՏԱԿՑԻ ԱՆՈՒՆԸ */
-
 window.addEventListener(
   "load",
-  async function(){
+  async()=>{
 
-    const saved =
+    currentDay=localDateKey();
+
+    const saved=
       localStorage.getItem(
         "employeeName"
       );
 
     if(saved){
 
+      currentName=saved;
+
       document
         .getElementById("nameInput")
-        .value = saved;
+        .value=saved;
 
-      currentName = saved;
+      await loadEmployee(true);
 
-      await loadEmployee(
-        saved,
-        true
-      );
-
-      refreshTimer =
-        setInterval(
-          function(){
-
-            if(currentName){
-              loadEmployee(
-                currentName,
-                false
-              );
-            }
-
-          },
-          5000
-        );
+      startAutoRefresh();
     }
 
   }
