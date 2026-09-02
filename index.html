@@ -2,14 +2,16 @@
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Իմ Վաճառքները</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -28,19 +30,21 @@ body{
 
 .logo{
   display:block;
-  width:220px;
-  max-width:70%;
+  width:230px;
+  max-width:75%;
   height:auto;
-  margin:8px auto 18px;
+  margin:10px auto 20px;
 }
+
+/* HEADER */
 
 .header{
   text-align:center;
   margin-bottom:20px;
 }
 
-h1{
-  margin:5px 0;
+.header h1{
+  margin:0 0 7px;
   font-size:28px;
 }
 
@@ -55,7 +59,7 @@ h1{
   background:#111c30;
   border-radius:20px;
   padding:16px;
-  margin-bottom:18px;
+  margin-bottom:15px;
 }
 
 .nameInput{
@@ -63,7 +67,7 @@ h1{
   border:1px solid #2a3a55;
   border-radius:13px;
   background:#0c1526;
-  color:white;
+  color:#fff;
   padding:15px;
   font-size:17px;
   outline:none;
@@ -75,41 +79,42 @@ h1{
   border:0;
   border-radius:13px;
   background:#25a8df;
-  color:white;
+  color:#fff;
+  padding:15px;
   font-size:16px;
   font-weight:900;
-  padding:15px;
 }
 
 .status{
   text-align:center;
-  margin:12px 0;
+  min-height:20px;
+  margin:10px 0;
   font-size:13px;
   color:#8e9ab3;
 }
 
-/* EMPLOYEE */
+/* WELCOME */
 
-.employeeWelcome{
-  background:#111c30;
-  border-radius:18px;
-  padding:16px;
+.welcome{
+  background:linear-gradient(135deg,#162842,#101b2e);
+  border-radius:20px;
+  padding:17px;
   margin-bottom:14px;
 }
 
 .employeeName{
-  font-size:24px;
+  font-size:25px;
   font-weight:900;
 }
 
 .motivation{
+  margin-top:7px;
   color:#62e9b8;
   font-size:16px;
   font-weight:800;
-  margin-top:6px;
 }
 
-/* SUMMARY */
+/* TOTAL */
 
 .summary{
   background:linear-gradient(135deg,#142b4a,#0c739e);
@@ -124,7 +129,7 @@ h1{
 }
 
 .summaryValue{
-  font-size:28px;
+  font-size:30px;
   font-weight:900;
   margin-top:5px;
 }
@@ -133,7 +138,7 @@ h1{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin-top:12px;
+  margin-top:13px;
 }
 
 .summaryItem{
@@ -165,8 +170,8 @@ h1{
 .packageTop{
   display:flex;
   justify-content:space-between;
-  gap:10px;
   align-items:center;
+  gap:10px;
 }
 
 .packagePrice{
@@ -174,21 +179,30 @@ h1{
   font-weight:900;
 }
 
-.count{
+.countBox{
   background:#172238;
   border-radius:11px;
-  min-width:64px;
+  min-width:65px;
   text-align:center;
   padding:10px;
-  font-size:20px;
+}
+
+.countNumber{
+  font-size:21px;
   font-weight:900;
 }
 
+.countLabel{
+  font-size:9px;
+  color:#8e9ab3;
+  margin-top:2px;
+}
+
 .packageInfo{
-  margin-top:10px;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
+  margin-top:10px;
 }
 
 .infoBox{
@@ -231,116 +245,118 @@ h1{
 
 <div class="container">
 
-<!-- HOME TELECOM LOGO -->
-<img src="IMG_7968.png" class="logo" alt="Home Telecom">
+  <!-- ԼՈԳՈՆ -->
+  <img
+    src="./IMG_7968.png"
+    class="logo"
+    alt="Home Telecom"
+  >
 
-<div class="header">
+  <div class="header">
+    <h1>Իմ Վաճառքները</h1>
 
-  <h1>Իմ Վաճառքները</h1>
-
-  <div class="subtitle">
-    Գրեք ձեր անունը և տեսեք ձեր արդյունքը
+    <div class="subtitle">
+      Գրեք ձեր անունը և տեսեք ձեր արդյունքը
+    </div>
   </div>
 
-</div>
+  <div class="searchBox">
 
-<div class="searchBox">
+    <input
+      id="nameInput"
+      class="nameInput"
+      type="text"
+      placeholder="Գրեք ձեր անունը"
+      autocomplete="off"
+    >
 
-  <input
-    id="nameInput"
-    class="nameInput"
-    type="text"
-    placeholder="Գրեք ձեր անունը"
-    autocomplete="off"
-  >
-
-  <button
-    class="searchButton"
-    onclick="findEmployee()"
-  >
-    Տեսնել իմ արդյունքը
-  </button>
-
-</div>
-
-<div id="status" class="status"></div>
-
-<div id="result" class="hidden">
-
-  <!-- EMPLOYEE NAME + MOTIVATION -->
-
-  <div class="employeeWelcome">
-
-    <div
-      class="employeeName"
-      id="employeeName">
-    </div>
-
-    <div class="motivation">
-      Դու կարող ես ավելին... 🚀
-    </div>
+    <button
+      class="searchButton"
+      onclick="findEmployee()"
+    >
+      Տեսնել իմ արդյունքը
+    </button>
 
   </div>
 
-  <!-- TOTAL -->
+  <div id="status" class="status"></div>
 
-  <div class="summary">
+  <div id="result" class="hidden">
 
-    <div class="summaryTitle">
-      Ընդհանուր ստացած բոնուս
-    </div>
+    <!-- ԱՆՈՒՆ + ՄՈՏԻՎԱՑԻԱ -->
 
-    <div
-      class="summaryValue"
-      id="totalBonus">
-      0 դրամ
-    </div>
+    <div class="welcome">
 
-    <div class="summaryGrid">
-
-      <div class="summaryItem">
-
-        <div class="small">
-          Ընդհանուր վաճառք
-        </div>
-
-        <div
-          class="value"
-          id="totalSales">
-          0
-        </div>
-
+      <div
+        class="employeeName"
+        id="employeeName">
       </div>
 
-      <div class="summaryItem">
-
-        <div class="small">
-          Վերջին թարմացում
-        </div>
-
-        <div
-          class="value"
-          id="updatedTime">
-          —
-        </div>
-
+      <div class="motivation">
+        Դու կարող ես ավելին... 🚀
       </div>
 
     </div>
 
+    <!-- ԸՆԴՀԱՆՈՒՐ ԱՐԴՅՈՒՆՔ -->
+
+    <div class="summary">
+
+      <div class="summaryTitle">
+        Ընդհանուր ստացած բոնուս
+      </div>
+
+      <div
+        class="summaryValue"
+        id="totalBonus"
+      >
+        0 դրամ
+      </div>
+
+      <div class="summaryGrid">
+
+        <div class="summaryItem">
+          <div class="small">
+            Ընդհանուր վաճառք
+          </div>
+
+          <div
+            class="value"
+            id="totalSales"
+          >
+            0
+          </div>
+        </div>
+
+        <div class="summaryItem">
+          <div class="small">
+            Վերջին թարմացում
+          </div>
+
+          <div
+            class="value"
+            id="updatedTime"
+          >
+            —
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ՓԱԹԵԹՆԵՐ -->
+
+    <div id="packages"></div>
+
   </div>
 
-  <!-- PACKAGES -->
-
-  <div id="packages"></div>
-
-</div>
-
-<div
-  id="notFound"
-  class="notFound hidden">
-  Այս անունով աշխատակից չի գտնվել
-</div>
+  <div
+    id="notFound"
+    class="notFound hidden"
+  >
+    Այս անունով աշխատակից չի գտնվել
+  </div>
 
 </div>
 
@@ -360,42 +376,30 @@ const db = supabase.createClient(
 let currentName = "";
 let refreshTimer = null;
 
-function money(n){
-
-  return new Intl.NumberFormat(
-    "hy-AM"
-  ).format(
-    Number(n)||0
-  ) + " դրամ";
+function money(number){
+  return new Intl.NumberFormat("hy-AM")
+    .format(Number(number) || 0) + " դրամ";
 }
 
 function setStatus(text){
-
-  document
-    .getElementById("status")
-    .textContent=text;
+  document.getElementById("status").textContent = text;
 }
 
-/* FIND EMPLOYEE */
+/* ԱՇԽԱՏԱԿՑԻ ՈՐՈՆՈՒՄ */
 
 async function findEmployee(){
 
-  const input=
-    document
-      .getElementById("nameInput")
-      .value
-      .trim();
+  const input = document
+    .getElementById("nameInput")
+    .value
+    .trim();
 
   if(!input){
-
-    setStatus(
-      "Գրեք ձեր անունը"
-    );
-
+    setStatus("Գրեք ձեր անունը");
     return;
   }
 
-  currentName=input;
+  currentName = input;
 
   localStorage.setItem(
     "employeeName",
@@ -408,18 +412,14 @@ async function findEmployee(){
   );
 
   if(refreshTimer){
-
-    clearInterval(
-      refreshTimer
-    );
+    clearInterval(refreshTimer);
   }
 
-  refreshTimer=setInterval(
-    async ()=>{
+  refreshTimer = setInterval(
+    function(){
 
       if(currentName){
-
-        await loadEmployee(
+        loadEmployee(
           currentName,
           false
         );
@@ -430,54 +430,44 @@ async function findEmployee(){
   );
 }
 
-/* LOAD EMPLOYEE */
+/* SUPABASE-ԻՑ ՏՎՅԱԼՆԵՐ */
 
 async function loadEmployee(
   name,
-  showLoading=true
+  showLoading
 ){
 
   if(showLoading){
-
-    setStatus(
-      "Բեռնում է..."
-    );
+    setStatus("Բեռնում է...");
   }
 
   try{
 
-    const [
-      employeeResponse,
-      packagesResponse
-    ] = await Promise.all([
-
-      db
+    const employeeResponse =
+      await db
         .from("employees")
         .select("*")
-        .ilike("name",name)
-        .maybeSingle(),
-
-      db
-        .from("packages")
-        .select("price,bonus")
-        .order("price")
-
-    ]);
+        .ilike("name", name)
+        .maybeSingle();
 
     if(employeeResponse.error){
-
       throw employeeResponse.error;
     }
 
-    if(packagesResponse.error){
+    const packagesResponse =
+      await db
+        .from("packages")
+        .select("price,bonus")
+        .order("price");
 
+    if(packagesResponse.error){
       throw packagesResponse.error;
     }
 
-    const employee=
+    const employee =
       employeeResponse.data;
 
-    const packages=
+    const packageList =
       packagesResponse.data || [];
 
     if(!employee){
@@ -504,7 +494,7 @@ async function loadEmployee(
 
     renderEmployee(
       employee,
-      packages
+      packageList
     );
 
     setStatus(
@@ -521,11 +511,11 @@ async function loadEmployee(
   }
 }
 
-/* SHOW DATA */
+/* ՑՈՒՅՑ ՏԱԼ ԱՐԴՅՈՒՆՔԸ */
 
 function renderEmployee(
   employee,
-  packages
+  packageList
 ){
 
   document
@@ -535,34 +525,29 @@ function renderEmployee(
 
   document
     .getElementById("employeeName")
-    .textContent=
-    employee.name;
+    .textContent =
+      employee.name;
 
-  let totalSales=0;
-  let totalBonus=0;
+  let totalSales = 0;
+  let totalBonus = 0;
 
-  let html="";
+  let html = "";
 
-  packages.forEach(p=>{
+  packageList.forEach(function(p){
 
-    const field=
-      "package_"+p.price;
+    const field =
+      "package_" + p.price;
 
-    const count=
-      Number(
-        employee[field]
-      ) || 0;
+    const count =
+      Number(employee[field]) || 0;
 
-    const bonus=
-      Number(
-        p.bonus
-      ) || 0;
+    const bonus =
+      Number(p.bonus) || 0;
 
-    const earned=
+    const earned =
       count * bonus;
 
     totalSales += count;
-
     totalBonus += earned;
 
     html += `
@@ -575,8 +560,16 @@ function renderEmployee(
             ${money(p.price)}
           </div>
 
-          <div class="count">
-            ${count}
+          <div class="countBox">
+
+            <div class="countNumber">
+              ${count}
+            </div>
+
+            <div class="countLabel">
+              ՎԱՃԱՌՔ
+            </div>
+
           </div>
 
         </div>
@@ -586,7 +579,7 @@ function renderEmployee(
           <div class="infoBox">
 
             <div class="infoLabel">
-              1 վաճառքից
+              1 վաճառքից բոնուս
             </div>
 
             <div class="infoValue">
@@ -610,28 +603,28 @@ function renderEmployee(
         </div>
 
       </div>
+
     `;
   });
 
   document
     .getElementById("packages")
-    .innerHTML=html;
+    .innerHTML = html;
 
   document
     .getElementById("totalSales")
-    .textContent=
-    totalSales;
+    .textContent =
+      totalSales;
 
   document
     .getElementById("totalBonus")
-    .textContent=
-    money(totalBonus);
+    .textContent =
+      money(totalBonus);
 
   document
     .getElementById("updatedTime")
-    .textContent=
-    new Date()
-      .toLocaleTimeString(
+    .textContent =
+      new Date().toLocaleTimeString(
         "hy-AM",
         {
           hour:"2-digit",
@@ -640,7 +633,7 @@ function renderEmployee(
       );
 }
 
-/* ENTER BUTTON */
+/* ENTER-ՈՎ ՄՈՒՏՔ */
 
 document
   .getElementById("nameInput")
@@ -648,20 +641,20 @@ document
     "keydown",
     function(event){
 
-      if(event.key==="Enter"){
-
+      if(event.key === "Enter"){
         findEmployee();
       }
+
     }
   );
 
-/* REMEMBER EMPLOYEE */
+/* ՀԻՇԵԼ ԱՇԽԱՏԱԿՑԻ ԱՆՈՒՆԸ */
 
 window.addEventListener(
   "load",
-  async ()=>{
+  async function(){
 
-    const saved=
+    const saved =
       localStorage.getItem(
         "employeeName"
       );
@@ -670,22 +663,21 @@ window.addEventListener(
 
       document
         .getElementById("nameInput")
-        .value=saved;
+        .value = saved;
 
-      currentName=saved;
+      currentName = saved;
 
       await loadEmployee(
         saved,
         true
       );
 
-      refreshTimer=
+      refreshTimer =
         setInterval(
-          async ()=>{
+          function(){
 
             if(currentName){
-
-              await loadEmployee(
+              loadEmployee(
                 currentName,
                 false
               );
@@ -695,6 +687,7 @@ window.addEventListener(
           5000
         );
     }
+
   }
 );
 
