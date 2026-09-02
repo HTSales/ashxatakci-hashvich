@@ -24,10 +24,13 @@ body{
   padding:18px;
 }
 
+/* LOGO */
+
 .logo{
   display:block;
   width:220px;
   max-width:70%;
+  height:auto;
   margin:8px auto 18px;
 }
 
@@ -45,6 +48,8 @@ h1{
   color:#8e9ab3;
   font-size:14px;
 }
+
+/* SEARCH */
 
 .searchBox{
   background:#111c30;
@@ -83,11 +88,28 @@ h1{
   color:#8e9ab3;
 }
 
-.employeeName{
-  font-size:23px;
-  font-weight:900;
-  margin-bottom:12px;
+/* EMPLOYEE */
+
+.employeeWelcome{
+  background:#111c30;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
 }
+
+.employeeName{
+  font-size:24px;
+  font-weight:900;
+}
+
+.motivation{
+  color:#62e9b8;
+  font-size:16px;
+  font-weight:800;
+  margin-top:6px;
+}
+
+/* SUMMARY */
 
 .summary{
   background:linear-gradient(135deg,#142b4a,#0c739e);
@@ -130,6 +152,8 @@ h1{
   font-weight:900;
   margin-top:4px;
 }
+
+/* PACKAGES */
 
 .package{
   background:#111c30;
@@ -207,13 +231,17 @@ h1{
 
 <div class="container">
 
-<img src="IMG_7968.png" class="logo">
+<!-- HOME TELECOM LOGO -->
+<img src="IMG_7968.png" class="logo" alt="Home Telecom">
 
 <div class="header">
+
   <h1>Իմ Վաճառքները</h1>
+
   <div class="subtitle">
     Գրեք ձեր անունը և տեսեք ձեր արդյունքը
   </div>
+
 </div>
 
 <div class="searchBox">
@@ -239,7 +267,22 @@ h1{
 
 <div id="result" class="hidden">
 
-  <div class="employeeName" id="employeeName"></div>
+  <!-- EMPLOYEE NAME + MOTIVATION -->
+
+  <div class="employeeWelcome">
+
+    <div
+      class="employeeName"
+      id="employeeName">
+    </div>
+
+    <div class="motivation">
+      Դու կարող ես ավելին... 🚀
+    </div>
+
+  </div>
+
+  <!-- TOTAL -->
 
   <div class="summary">
 
@@ -247,41 +290,55 @@ h1{
       Ընդհանուր ստացած բոնուս
     </div>
 
-    <div class="summaryValue" id="totalBonus">
+    <div
+      class="summaryValue"
+      id="totalBonus">
       0 դրամ
     </div>
 
     <div class="summaryGrid">
 
       <div class="summaryItem">
+
         <div class="small">
           Ընդհանուր վաճառք
         </div>
 
-        <div class="value" id="totalSales">
+        <div
+          class="value"
+          id="totalSales">
           0
         </div>
+
       </div>
 
       <div class="summaryItem">
+
         <div class="small">
           Վերջին թարմացում
         </div>
 
-        <div class="value" id="updatedTime">
+        <div
+          class="value"
+          id="updatedTime">
           —
         </div>
+
       </div>
 
     </div>
 
   </div>
 
+  <!-- PACKAGES -->
+
   <div id="packages"></div>
 
 </div>
 
-<div id="notFound" class="notFound hidden">
+<div
+  id="notFound"
+  class="notFound hidden">
   Այս անունով աշխատակից չի գտնվել
 </div>
 
@@ -304,31 +361,36 @@ let currentName = "";
 let refreshTimer = null;
 
 function money(n){
-  return new Intl.NumberFormat("hy-AM")
-    .format(Number(n)||0) + " դրամ";
-}
 
-function escapeHtml(text){
-  return String(text||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;");
+  return new Intl.NumberFormat(
+    "hy-AM"
+  ).format(
+    Number(n)||0
+  ) + " դրամ";
 }
 
 function setStatus(text){
-  document.getElementById("status").textContent=text;
+
+  document
+    .getElementById("status")
+    .textContent=text;
 }
+
+/* FIND EMPLOYEE */
 
 async function findEmployee(){
 
   const input=
-    document.getElementById("nameInput")
-    .value.trim();
+    document
+      .getElementById("nameInput")
+      .value
+      .trim();
 
   if(!input){
 
-    setStatus("Գրեք ձեր անունը");
+    setStatus(
+      "Գրեք ձեր անունը"
+    );
 
     return;
   }
@@ -346,21 +408,29 @@ async function findEmployee(){
   );
 
   if(refreshTimer){
-    clearInterval(refreshTimer);
+
+    clearInterval(
+      refreshTimer
+    );
   }
 
   refreshTimer=setInterval(
     async ()=>{
+
       if(currentName){
+
         await loadEmployee(
           currentName,
           false
         );
       }
+
     },
     5000
   );
 }
+
+/* LOAD EMPLOYEE */
 
 async function loadEmployee(
   name,
@@ -368,7 +438,10 @@ async function loadEmployee(
 ){
 
   if(showLoading){
-    setStatus("Բեռնում է...");
+
+    setStatus(
+      "Բեռնում է..."
+    );
   }
 
   try{
@@ -388,13 +461,16 @@ async function loadEmployee(
         .from("packages")
         .select("price,bonus")
         .order("price")
+
     ]);
 
     if(employeeResponse.error){
+
       throw employeeResponse.error;
     }
 
     if(packagesResponse.error){
+
       throw packagesResponse.error;
     }
 
@@ -408,11 +484,13 @@ async function loadEmployee(
 
       document
         .getElementById("result")
-        .classList.add("hidden");
+        .classList
+        .add("hidden");
 
       document
         .getElementById("notFound")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
       setStatus("");
 
@@ -421,7 +499,8 @@ async function loadEmployee(
 
     document
       .getElementById("notFound")
-      .classList.add("hidden");
+      .classList
+      .add("hidden");
 
     renderEmployee(
       employee,
@@ -442,19 +521,21 @@ async function loadEmployee(
   }
 }
 
+/* SHOW DATA */
+
 function renderEmployee(
   employee,
   packages
 ){
 
-  const result=
-    document.getElementById("result");
+  document
+    .getElementById("result")
+    .classList
+    .remove("hidden");
 
-  result.classList.remove("hidden");
-
-  document.getElementById(
-    "employeeName"
-  ).textContent=
+  document
+    .getElementById("employeeName")
+    .textContent=
     employee.name;
 
   let totalSales=0;
@@ -468,18 +549,23 @@ function renderEmployee(
       "package_"+p.price;
 
     const count=
-      Number(employee[field])||0;
+      Number(
+        employee[field]
+      ) || 0;
 
     const bonus=
-      Number(p.bonus)||0;
+      Number(
+        p.bonus
+      ) || 0;
 
     const earned=
-      count*bonus;
+      count * bonus;
 
-    totalSales+=count;
-    totalBonus+=earned;
+    totalSales += count;
 
-    html+=`
+    totalBonus += earned;
+
+    html += `
 
       <div class="package">
 
@@ -527,47 +613,49 @@ function renderEmployee(
     `;
   });
 
-  document.getElementById(
-    "packages"
-  ).innerHTML=html;
+  document
+    .getElementById("packages")
+    .innerHTML=html;
 
-  document.getElementById(
-    "totalSales"
-  ).textContent=
+  document
+    .getElementById("totalSales")
+    .textContent=
     totalSales;
 
-  document.getElementById(
-    "totalBonus"
-  ).textContent=
+  document
+    .getElementById("totalBonus")
+    .textContent=
     money(totalBonus);
 
-  document.getElementById(
-    "updatedTime"
-  ).textContent=
-    new Date().toLocaleTimeString(
-      "hy-AM",
-      {
-        hour:"2-digit",
-        minute:"2-digit"
-      }
-    );
+  document
+    .getElementById("updatedTime")
+    .textContent=
+    new Date()
+      .toLocaleTimeString(
+        "hy-AM",
+        {
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
 }
 
-/* ENTER */
+/* ENTER BUTTON */
 
-document.getElementById(
-  "nameInput"
-).addEventListener(
-  "keydown",
-  function(event){
+document
+  .getElementById("nameInput")
+  .addEventListener(
+    "keydown",
+    function(event){
 
-    if(event.key==="Enter"){
-      findEmployee();
+      if(event.key==="Enter"){
+
+        findEmployee();
+      }
     }
-  }
-);
+  );
 
-/* REMEMBER NAME */
+/* REMEMBER EMPLOYEE */
 
 window.addEventListener(
   "load",
@@ -580,9 +668,9 @@ window.addEventListener(
 
     if(saved){
 
-      document.getElementById(
-        "nameInput"
-      ).value=saved;
+      document
+        .getElementById("nameInput")
+        .value=saved;
 
       currentName=saved;
 
@@ -591,17 +679,21 @@ window.addEventListener(
         true
       );
 
-      refreshTimer=setInterval(
-        async ()=>{
-          if(currentName){
-            await loadEmployee(
-              currentName,
-              false
-            );
-          }
-        },
-        5000
-      );
+      refreshTimer=
+        setInterval(
+          async ()=>{
+
+            if(currentName){
+
+              await loadEmployee(
+                currentName,
+                false
+              );
+            }
+
+          },
+          5000
+        );
     }
   }
 );
