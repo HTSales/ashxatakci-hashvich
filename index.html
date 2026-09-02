@@ -97,7 +97,7 @@ body{
   font-weight:900;
 }
 
-.changeNameBtn{
+.secondaryBtn{
   width:100%;
   border:0;
   border-radius:12px;
@@ -255,7 +255,6 @@ body{
 <div class="sub">Home Telecom</div>
 
 <div id="loginArea">
-
   <div class="loginBox">
 
     <div class="loginTitle">Մուտք</div>
@@ -284,7 +283,7 @@ body{
     </button>
 
     <button
-      class="changeNameBtn"
+      class="secondaryBtn"
       id="changeNameButton"
       onclick="resetLogin()"
       style="display:none"
@@ -293,7 +292,6 @@ body{
     </button>
 
   </div>
-
 </div>
 
 <div id="resultArea" style="display:none">
@@ -316,7 +314,6 @@ body{
 </div>
 
 <script>
-
 const SUPABASE_URL =
 "https://pstoegdsngmkxggyaloz.supabase.co";
 
@@ -363,7 +360,6 @@ function money(v){
 }
 
 function todayKey(){
-
   const parts =
     new Intl.DateTimeFormat(
       "en-CA",
@@ -375,7 +371,7 @@ function todayKey(){
       }
     ).formatToParts(new Date());
 
-  const map={};
+  const map = {};
 
   parts.forEach(p=>{
     map[p.type]=p.value;
@@ -385,7 +381,6 @@ function todayKey(){
 }
 
 function updateClock(){
-
   const dateEl=document.getElementById("dateText");
   const clockEl=document.getElementById("clockText");
 
@@ -427,7 +422,6 @@ function clearError(){
 }
 
 async function mainAction(){
-
   clearError();
 
   if(loginMode==="name"){
@@ -462,7 +456,7 @@ async function findEmployee(){
   const result =
     await db
     .from("employees")
-    .select("*")
+    .select("id,name,active,access_code")
     .eq("active",true)
     .ilike("name",name)
     .maybeSingle();
@@ -490,7 +484,7 @@ async function findEmployee(){
     loginMode="create";
 
     document.getElementById("loginInfo").textContent =
-      "Առաջին մուտքն է։ Ստեղծիր քո անձնական կոդը։ Այսուհետ միշտ այդ կոդով ես մտնելու։";
+      "Առաջին մուտքն է։ Ստեղծիր քո կոդը։ Հաջորդ բոլոր մուտքերին նույն կոդն է պետք։";
 
     document.getElementById("codeArea").innerHTML=`
       <input
@@ -498,9 +492,10 @@ async function findEmployee(){
         id="codeInput"
         type="password"
         inputmode="numeric"
-        placeholder="Ստեղծիր քո կոդը"
+        placeholder="Ստեղծիր կոդ"
         autocomplete="new-password"
       >
+
       <input
         class="input"
         id="codeRepeatInput"
@@ -519,7 +514,7 @@ async function findEmployee(){
     loginMode="login";
 
     document.getElementById("loginInfo").textContent =
-      "Այս անունն արդեն ունի կոդ։ Մուտքագրիր քո կոդը։";
+      "Մուտքագրիր քո կոդը";
 
     document.getElementById("codeArea").innerHTML=`
       <input
@@ -563,55 +558,27 @@ async function createFirstCode(){
 
   status.textContent="Կոդը պահպանվում է...";
 
-  /*
-    Կոդը պահում ենք միայն այն դեպքում,
-    եթե աշխատակցի մոտ դեռ կոդ չկա։
-  */
-
-  const result =
+  const check =
     await db
     .from("employees")
-    .update({
-      access_code:code
-    })
+    .select("id,name,active,access_code")
     .eq("id",employee.id)
-    .is("access_code",null)
-    .select("*")
-    .maybeSingle();
+    .eq("active",true)
+    .single();
 
-  status.textContent="";
-
-  if(result.error){
-    console.error(result.error);
-    showError("Կոդը պահպանել չհաջողվեց");
+  if(check.error){
+    status.textContent="";
+    showError("Չհաջողվեց ստուգել աշխատակցին");
     return;
   }
 
-  if(!result.data){
-
-    /*
-      Եթե այդ ընթացքում արդեն կոդ է ստեղծվել,
-      նոր կոդ չենք փոխարինում։
-    */
-
-    const check =
-      await db
-      .from("employees")
-      .select("*")
-      .eq("id",employee.id)
-      .eq("active",true)
-      .single();
-
-    if(check.error){
-      showError("Չհաջողվեց ստուգել կոդը");
-      return;
-    }
-
+  if(check.data.access_code){
+    status.textContent="";
     employee=check.data;
     loginMode="login";
 
     document.getElementById("loginInfo").textContent =
-      "Այս անունն արդեն ունի կոդ։ Մուտքագրիր քո կոդը։";
+      "Կոդն արդեն ստեղծված է։ Մուտքագրիր քո կոդը։";
 
     document.getElementById("codeArea").innerHTML=`
       <input
@@ -626,7 +593,29 @@ async function createFirstCode(){
     document.getElementById("mainButton").textContent =
       "Մուտք գործել";
 
-    showError("Այս աշխատակցի կոդն արդեն ստեղծված է");
+    return;
+  }
+
+  const result =
+    await db
+    .from("employees")
+    .update({access_code:code})
+    .eq("id",employee.id)
+    .is("access_code",null)
+    .select("id,name,active,access_code")
+    .maybeSingle();
+
+  status.textContent="";
+
+  if(result.error){
+    console.error(result.error);
+    showError("Կոդը պահպանել չհաջողվեց");
+    return;
+  }
+
+  if(!result.data){
+    showError("Կոդն արդեն ստեղծվել է");
+    resetLogin();
     return;
   }
 
@@ -650,20 +639,16 @@ async function loginWithCode(){
     .trim();
 
   if(!code){
-    showError("Մուտքագրիր քո կոդը");
+    showError("Գրիր կոդը");
     return;
   }
 
   status.textContent="Մուտք...";
 
-  /*
-    Առանց ճիշտ կոդի տվյալ չենք ստանում։
-  */
-
   const result =
     await db
     .from("employees")
-    .select("*")
+    .select("id,name,active")
     .eq("id",employee.id)
     .eq("access_code",code)
     .eq("active",true)
@@ -673,7 +658,7 @@ async function loginWithCode(){
 
   if(result.error){
     console.error(result.error);
-    showError("Մուտք գործել չհաջողվեց");
+    showError("Չհաջողվեց մուտք գործել");
     return;
   }
 
@@ -763,11 +748,6 @@ function renderResult(row){
 
     const count =
       Number(row ? row[field] : 0)||0;
-
-    /*
-      Աշխատակիցը տեսնում է
-      միայն իրեն հասնող բոնուսը։
-    */
 
     const employeeBonus =
       Number(pkg.employee_bonus)||0;
@@ -859,7 +839,6 @@ function resetLogin(){
   loginMode="name";
 
   document.getElementById("nameInput").disabled=false;
-
   document.getElementById("codeArea").innerHTML="";
 
   document.getElementById("loginInfo").textContent =
@@ -901,7 +880,6 @@ function logout(){
 }
 
 function escapeHTML(t){
-
   return String(t)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
@@ -909,9 +887,6 @@ function escapeHTML(t){
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
-
-/* Նախորդ օգտագործած անունը միայն լրացնում ենք,
-   բայց առանց կոդի երբեք ավտոմատ ներս չենք թողնում։ */
 
 const savedName =
   localStorage.getItem("ht_employee_name");
