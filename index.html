@@ -2,20 +2,40 @@
 <html lang="hy">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,viewport-fit=cover"
+>
 
 <title>Home Telecom Sales</title>
 
 <link rel="manifest" href="./manifest.json">
+
 <meta name="theme-color" content="#08101d">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="HT Sales">
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
 
-<link rel="apple-touch-icon" href="./IMG_7968.png">
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="HT Sales"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="./IMG_7968.png"
+>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
@@ -24,16 +44,23 @@
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
   min-height:100%;
   background:#08101d;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:#fff;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
 
 .container{
-  max-width:700px;
+  width:100%;
+  max-width:720px;
   margin:auto;
   padding:18px;
 }
@@ -41,8 +68,8 @@ html,body{
 .logo{
   display:block;
   width:220px;
-  max-width:70%;
-  margin:5px auto 12px;
+  max-width:68%;
+  margin:4px auto 12px;
 }
 
 .header{
@@ -50,47 +77,49 @@ html,body{
   margin-bottom:18px;
 }
 
-h1{
+.header h1{
   margin:0;
-  font-size:29px;
+  font-size:30px;
+  font-weight:900;
 }
 
 .subtitle{
-  color:#8d9ab5;
   margin-top:5px;
+  color:#8190ad;
 }
 
 .dateBox{
-  background:#111c30;
-  border-radius:18px;
-  padding:14px;
+  background:#111d31;
+  border-radius:26px;
+  padding:18px;
+  margin-bottom:18px;
   text-align:center;
-  margin-bottom:15px;
 }
 
 .date{
+  color:#9aa7c1;
   font-size:18px;
-  font-weight:900;
-  color:#6ce7bb;
+  font-weight:700;
 }
 
 .clock{
-  margin-top:5px;
-  color:#8d9ab5;
-  font-size:13px;
+  margin-top:6px;
+  color:#fff;
+  font-size:20px;
+  font-weight:900;
 }
 
 .searchCard{
-  background:#111c30;
-  border-radius:18px;
-  padding:15px;
-  margin-bottom:15px;
+  background:#111d31;
+  border-radius:24px;
+  padding:18px;
+  margin-bottom:18px;
 }
 
 .searchTitle{
-  font-size:12px;
-  color:#8d9ab5;
-  margin-bottom:8px;
+  color:#9aa7c1;
+  font-size:14px;
+  margin-bottom:9px;
 }
 
 .searchRow{
@@ -101,183 +130,185 @@ h1{
 .searchInput{
   flex:1;
   min-width:0;
-  background:#0b1526;
-  color:#fff;
-  border:1px solid #2c3b56;
-  border-radius:12px;
-  padding:13px;
+  border:1px solid #293853;
+  border-radius:13px;
+  padding:14px;
+  background:#091526;
+  color:white;
   font-size:16px;
   outline:none;
 }
 
 .searchBtn{
   border:none;
-  border-radius:12px;
-  padding:0 17px;
+  border-radius:13px;
+  padding:0 18px;
   background:#249fd4;
   color:#fff;
   font-weight:900;
   cursor:pointer;
 }
 
-.employeeCard{
+.employeeArea{
   display:none;
 }
 
 .employeeHeader{
-  background:linear-gradient(135deg,#143552,#0e6b78);
-  border-radius:20px;
-  padding:18px;
-  margin-bottom:12px;
+  background:#111d31;
+  border-radius:26px;
+  padding:20px;
+  margin-bottom:18px;
 }
 
 .employeeLabel{
-  font-size:11px;
-  opacity:.75;
+  color:#8d9ab5;
+  font-size:13px;
 }
 
 .employeeName{
-  font-size:26px;
+  margin-top:4px;
+  font-size:29px;
   font-weight:900;
-  margin-top:3px;
 }
 
 .updated{
-  font-size:11px;
-  opacity:.7;
-  margin-top:6px;
-}
-
-.summaryGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:12px;
+  color:#8d9ab5;
+  font-size:12px;
+  margin-top:7px;
 }
 
 .summaryCard{
-  background:#111c30;
-  border-radius:17px;
-  padding:15px;
+  background:#111d31;
+  border-radius:26px;
+  padding:24px 18px;
   text-align:center;
+  margin-bottom:18px;
 }
 
 .summaryLabel{
-  font-size:11px;
   color:#8d9ab5;
+  font-size:15px;
+  font-weight:700;
 }
 
 .summaryValue{
-  margin-top:5px;
-  font-size:22px;
+  font-size:36px;
   font-weight:900;
+  margin-top:8px;
 }
 
 .bonusCard{
-  background:linear-gradient(135deg,#113c32,#12634d);
-  border-radius:20px;
-  padding:18px;
+  background:linear-gradient(
+    135deg,
+    #164963,
+    #12747c
+  );
+  border-radius:30px;
+  padding:27px 18px;
   text-align:center;
-  margin-bottom:12px;
+  margin-bottom:25px;
 }
 
 .bonusLabel{
-  font-size:12px;
-  opacity:.8;
+  color:#dceaf0;
+  font-size:16px;
+  font-weight:700;
 }
 
 .bonusValue{
-  margin-top:5px;
-  font-size:32px;
+  margin-top:8px;
+  font-size:40px;
   font-weight:900;
 }
 
 .motivation{
-  margin-top:8px;
-  font-size:14px;
-  font-weight:800;
+  margin-top:14px;
+  font-size:17px;
+  font-weight:900;
 }
 
 .packagesTitle{
-  font-size:20px;
+  margin:22px 0 14px;
+  font-size:29px;
   font-weight:900;
-  margin:20px 0 10px;
 }
 
 .packageCard{
-  background:#111c30;
-  border-radius:17px;
-  padding:15px;
-  margin-bottom:9px;
+  background:#111d31;
+  border-radius:27px;
+  padding:20px;
+  margin-bottom:14px;
 }
 
 .packageTop{
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  gap:10px;
+  gap:14px;
 }
 
 .packageName{
-  font-size:18px;
+  font-size:23px;
   font-weight:900;
 }
 
 .packagePrice{
-  color:#8d9ab5;
-  font-size:12px;
-  margin-top:3px;
+  margin-top:5px;
+  color:#8190ad;
+  font-size:16px;
+  font-weight:700;
 }
 
-.count{
-  background:#182943;
-  border-radius:11px;
-  padding:9px 12px;
-  font-size:20px;
+.countBox{
+  min-width:92px;
+  background:#091526;
+  border-radius:22px;
+  padding:14px 12px;
+  text-align:center;
+}
+
+.countNumber{
+  font-size:31px;
   font-weight:900;
 }
 
-.packageInfo{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:12px;
+.countLabel{
+  margin-top:2px;
+  color:#8190ad;
+  font-size:13px;
+  font-weight:700;
 }
 
-.infoBox{
-  background:#0b1526;
-  border-radius:11px;
-  padding:10px;
+.packageBottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:15px;
+  margin-top:18px;
 }
 
-.infoLabel{
-  font-size:10px;
+.oneSale{
   color:#8d9ab5;
-}
-
-.infoValue{
-  margin-top:4px;
-  font-size:15px;
-  font-weight:900;
-}
-
-.employeeBonus{
-  color:#71c9ff;
+  font-size:16px;
+  font-weight:700;
 }
 
 .earned{
-  color:#72efb1;
+  text-align:right;
+  color:#6eedb5;
+  font-size:18px;
+  font-weight:900;
 }
 
 .downloadBtn{
   width:100%;
   border:none;
-  border-radius:14px;
-  padding:15px;
-  margin-top:10px;
-  background:#16794d;
+  border-radius:16px;
+  padding:16px;
+  margin-top:14px;
+  background:#17794d;
   color:#fff;
-  font-size:15px;
+  font-size:16px;
   font-weight:900;
   cursor:pointer;
 }
@@ -285,11 +316,12 @@ h1{
 .changeBtn{
   width:100%;
   border:none;
-  border-radius:14px;
-  padding:13px;
-  margin-top:9px;
-  background:#1a2942;
+  border-radius:16px;
+  padding:14px;
+  margin-top:10px;
+  background:#192941;
   color:#fff;
+  font-size:15px;
   font-weight:800;
   cursor:pointer;
 }
@@ -297,26 +329,34 @@ h1{
 .message{
   text-align:center;
   color:#8d9ab5;
+  padding:12px 5px;
   font-size:13px;
-  padding:12px;
 }
 
 .error{
-  color:#ff9090;
+  color:#ff9292;
 }
 
-@media(max-width:480px){
+@media(max-width:500px){
 
   .container{
     padding:14px;
   }
 
-  h1{
+  .header h1{
+    font-size:27px;
+  }
+
+  .packagesTitle{
     font-size:26px;
   }
 
+  .packageName{
+    font-size:21px;
+  }
+
   .bonusValue{
-    font-size:29px;
+    font-size:36px;
   }
 
 }
@@ -394,8 +434,8 @@ h1{
 ></div>
 
 <div
-  id="employeeCard"
-  class="employeeCard"
+  id="employeeArea"
+  class="employeeArea"
 >
 
   <div class="employeeHeader">
@@ -416,44 +456,43 @@ h1{
 
   </div>
 
-  <div class="summaryGrid">
 
-    <div class="summaryCard">
+  <div class="summaryCard">
 
-      <div class="summaryLabel">
-        Այսօրվա վաճառքներ
-      </div>
-
-      <div
-        class="summaryValue"
-        id="totalSales"
-      >
-        0
-      </div>
-
+    <div class="summaryLabel">
+      Ընդհանուր վաճառք
     </div>
 
-    <div class="summaryCard">
-
-      <div class="summaryLabel">
-        Ակտիվ փաթեթներ
-      </div>
-
-      <div
-        class="summaryValue"
-        id="activePackages"
-      >
-        0
-      </div>
-
+    <div
+      class="summaryValue"
+      id="totalSales"
+    >
+      0
     </div>
 
   </div>
 
+
+  <div class="summaryCard">
+
+    <div class="summaryLabel">
+      Փաթեթների տեսակներ
+    </div>
+
+    <div
+      class="summaryValue"
+      id="packageTypes"
+    >
+      9
+    </div>
+
+  </div>
+
+
   <div class="bonusCard">
 
     <div class="bonusLabel">
-      💰 Իմ այսօրվա բոնուսը
+      Այսօրվա բոնուսը
     </div>
 
     <div
@@ -470,11 +509,13 @@ h1{
 
   </div>
 
+
   <div class="packagesTitle">
-    Իմ արդյունքները
+    Այսօրվա վաճառքները
   </div>
 
   <div id="packages"></div>
+
 
   <button
     class="downloadBtn"
@@ -482,6 +523,7 @@ h1{
   >
     📥 Ներբեռնել այսօրվա արդյունքը
   </button>
+
 
   <button
     class="changeBtn"
@@ -493,6 +535,7 @@ h1{
 </div>
 
 </div>
+
 
 <script>
 
@@ -508,21 +551,38 @@ supabase.createClient(
   SUPABASE_KEY
 );
 
+
 const fieldByCode = {
 
-  home_standard:"package_6900",
-  home_premium:"package_7900",
-  home_ultima:"package_8900",
+  home_standard:
+    "package_6900",
 
-  inet1:"package_3900",
-  inet2:"package_4900",
-  inet3:"package_5900",
+  home_premium:
+    "package_7900",
 
-  iptv1:"package_iptv1",
-  iptv2:"package_iptv2",
-  iptv3:"package_iptv3"
+  home_ultima:
+    "package_8900",
+
+  inet1:
+    "package_3900",
+
+  inet2:
+    "package_4900",
+
+  inet3:
+    "package_5900",
+
+  iptv1:
+    "package_iptv1",
+
+  iptv2:
+    "package_iptv2",
+
+  iptv3:
+    "package_iptv3"
 
 };
+
 
 const packageOrder = [
 
@@ -540,10 +600,12 @@ const packageOrder = [
 
 ];
 
+
 let currentEmployee = null;
 let currentPackages = [];
 let currentSales = null;
 let currentDay = "";
+
 
 function money(value){
 
@@ -556,6 +618,7 @@ function money(value){
   ) + " դրամ";
 
 }
+
 
 function localDateKey(){
 
@@ -572,6 +635,7 @@ function localDateKey(){
   ].join("-");
 
 }
+
 
 function updateClock(){
 
@@ -605,6 +669,7 @@ function updateClock(){
 
 }
 
+
 function getMotivation(totalBonus){
 
   if(totalBonus >= 40000){
@@ -623,6 +688,7 @@ function getMotivation(totalBonus){
 
 }
 
+
 function sortPackages(list){
 
   return [...list].sort(
@@ -633,6 +699,7 @@ function sortPackages(list){
   );
 
 }
+
 
 async function findEmployee(){
 
@@ -669,8 +736,9 @@ async function findEmployee(){
         .eq("active",true)
         .maybeSingle();
 
-    if(employeeRes.error)
+    if(employeeRes.error){
       throw employeeRes.error;
+    }
 
     if(!employeeRes.data){
 
@@ -707,10 +775,12 @@ async function findEmployee(){
 
 }
 
+
 async function loadEmployeeData(){
 
-  if(!currentEmployee)
+  if(!currentEmployee){
     return;
+  }
 
   currentDay =
     localDateKey();
@@ -742,11 +812,13 @@ async function loadEmployeeData(){
 
     ]);
 
-    if(packagesRes.error)
+    if(packagesRes.error){
       throw packagesRes.error;
+    }
 
-    if(salesRes.error)
+    if(salesRes.error){
       throw salesRes.error;
+    }
 
     currentPackages =
       sortPackages(
@@ -772,36 +844,42 @@ async function loadEmployeeData(){
 
 }
 
+
 function renderEmployee(){
 
-  if(!currentEmployee)
+  if(!currentEmployee){
     return;
+  }
 
   let totalSales = 0;
   let totalBonus = 0;
-  let activePackages = 0;
 
   let packagesHtml = "";
+
 
   currentPackages.forEach(pkg=>{
 
     const field =
       fieldByCode[pkg.code];
 
-    if(!field)
+    if(!field){
       return;
+    }
+
 
     const count =
       currentSales
-        ? Number(
-            currentSales[field]
-          ) || 0
-        : 0;
+        ?
+        Number(
+          currentSales[field]
+        ) || 0
+        :
+        0;
+
 
     /*
-      ԿԱՐԵՎՈՐ
-      Աշխատակցի մոտ օգտագործվում է
-      ՄԻԱՅՆ employee_bonus-ը։
+      ԱՅՍՏԵՂ ՕԳՏԱԳՈՐԾՎՈՒՄ Է
+      ՄԻԱՅՆ ԱՇԽԱՏԱԿՑԻ ԲՈՆՈՒՍԸ
     */
 
     const employeeBonus =
@@ -809,17 +887,19 @@ function renderEmployee(){
         pkg.employee_bonus
       ) || 0;
 
+
     const earned =
-      count * employeeBonus;
+      count *
+      employeeBonus;
+
 
     totalSales +=
       count;
 
+
     totalBonus +=
       earned;
 
-    if(count > 0)
-      activePackages++;
 
     packagesHtml += `
 
@@ -830,47 +910,54 @@ function renderEmployee(){
           <div>
 
             <div class="packageName">
+
               ${escapeHtml(
                 pkg.name || pkg.code
               )}
+
             </div>
 
             <div class="packagePrice">
-              Փաթեթ՝
+
               ${money(pkg.price)}
+
             </div>
 
           </div>
 
-          <div class="count">
-            ${count}
+
+          <div class="countBox">
+
+            <div class="countNumber">
+
+              ${count}
+
+            </div>
+
+            <div class="countLabel">
+
+              վաճառք
+
+            </div>
+
           </div>
 
         </div>
 
-        <div class="packageInfo">
 
-          <div class="infoBox">
+        <div class="packageBottom">
 
-            <div class="infoLabel">
-              1 վաճառքից իմ բոնուսը
-            </div>
+          <div class="oneSale">
 
-            <div class="infoValue employeeBonus">
-              ${money(employeeBonus)}
-            </div>
+            1 վաճառքից՝
+            ${money(employeeBonus)}
 
           </div>
 
-          <div class="infoBox">
 
-            <div class="infoLabel">
-              Վաստակած բոնուս
-            </div>
+          <div class="earned">
 
-            <div class="infoValue earned">
-              ${money(earned)}
-            </div>
+            + ${money(earned)}
 
           </div>
 
@@ -882,38 +969,48 @@ function renderEmployee(){
 
   });
 
+
   document.getElementById(
     "employeeName"
   ).textContent =
     currentEmployee.name;
+
 
   document.getElementById(
     "totalSales"
   ).textContent =
     totalSales;
 
+
   document.getElementById(
-    "activePackages"
+    "packageTypes"
   ).textContent =
-    activePackages;
+    currentPackages.length;
+
 
   document.getElementById(
     "totalBonus"
   ).textContent =
     money(totalBonus);
 
+
   document.getElementById(
     "motivation"
   ).textContent =
-    getMotivation(totalBonus);
+    getMotivation(
+      totalBonus
+    );
+
 
   document.getElementById(
     "packages"
   ).innerHTML =
     packagesHtml;
 
+
   let updatedText =
     "Այսօրվա տվյալներ";
+
 
   if(
     currentSales &&
@@ -938,24 +1035,29 @@ function renderEmployee(){
 
   }
 
+
   document.getElementById(
     "updated"
   ).textContent =
     updatedText;
+
 
   document.getElementById(
     "searchCard"
   ).style.display =
     "none";
 
+
   document.getElementById(
-    "employeeCard"
+    "employeeArea"
   ).style.display =
     "block";
+
 
   showMessage("");
 
 }
+
 
 function changeEmployee(){
 
@@ -967,7 +1069,7 @@ function changeEmployee(){
   currentSales = null;
 
   document.getElementById(
-    "employeeCard"
+    "employeeArea"
   ).style.display =
     "none";
 
@@ -978,23 +1080,29 @@ function changeEmployee(){
 
   document.getElementById(
     "nameInput"
-  ).value = "";
+  ).value =
+    "";
 
   showMessage("");
 
 }
 
+
 function downloadResult(){
 
-  if(!currentEmployee)
+  if(!currentEmployee){
     return;
+  }
 
   let totalSales = 0;
   let totalBonus = 0;
 
+
   const rows = [
 
-    ["ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"],
+    [
+      "ՔՈ ԱՅՍՕՐՎԱ ԱՐԴՅՈՒՆՔԸ"
+    ],
 
     [],
 
@@ -1020,40 +1128,53 @@ function downloadResult(){
 
   ];
 
+
   currentPackages.forEach(pkg=>{
 
     const field =
       fieldByCode[pkg.code];
 
-    if(!field)
+    if(!field){
       return;
+    }
+
 
     const count =
       currentSales
-        ? Number(
-            currentSales[field]
-          ) || 0
-        : 0;
+        ?
+        Number(
+          currentSales[field]
+        ) || 0
+        :
+        0;
+
 
     const employeeBonus =
       Number(
         pkg.employee_bonus
       ) || 0;
 
+
     const earned =
-      count * employeeBonus;
+      count *
+      employeeBonus;
+
 
     totalSales +=
       count;
 
+
     totalBonus +=
       earned;
+
 
     rows.push([
 
       pkg.name || pkg.code,
 
-      Number(pkg.price || 0),
+      Number(
+        pkg.price || 0
+      ),
 
       count,
 
@@ -1065,45 +1186,67 @@ function downloadResult(){
 
   });
 
+
   rows.push([]);
 
+
   rows.push([
+
     "Ընդհանուր վաճառք",
+
     totalSales
+
   ]);
 
+
   rows.push([
+
     "Իմ ընդհանուր բոնուսը",
+
     totalBonus
+
   ]);
+
 
   rows.push([]);
 
+
   rows.push([
-    getMotivation(totalBonus)
+
+    getMotivation(
+      totalBonus
+    )
+
   ]);
+
 
   const ws =
     XLSX.utils.aoa_to_sheet(
       rows
     );
 
+
   ws["!cols"] = [
+
     {wch:24},
     {wch:14},
     {wch:12},
     {wch:22},
     {wch:22}
+
   ];
+
 
   const wb =
     XLSX.utils.book_new();
+
 
   XLSX.utils.book_append_sheet(
     wb,
     ws,
     "Արդյունք"
   );
+
 
   XLSX.writeFile(
     wb,
@@ -1112,9 +1255,10 @@ function downloadResult(){
 
 }
 
+
 function showMessage(
   text,
-  error=false
+  isError=false
 ){
 
   const el =
@@ -1126,53 +1270,87 @@ function showMessage(
     text;
 
   el.className =
-    error
-      ? "message error"
-      : "message";
+    isError
+      ?
+      "message error"
+      :
+      "message";
 
 }
+
 
 function escapeHtml(text){
 
   return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
+
 async function autoRefresh(){
 
-  if(!currentEmployee)
+  if(!currentEmployee){
     return;
+  }
+
 
   const newDay =
     localDateKey();
 
-  if(newDay !== currentDay){
+
+  if(
+    newDay !== currentDay
+  ){
 
     currentDay =
       newDay;
 
   }
 
+
   await loadEmployeeData();
 
 }
 
+
 updateClock();
+
 
 setInterval(
   updateClock,
   1000
 );
 
+
 setInterval(
   autoRefresh,
   5000
 );
+
 
 window.addEventListener(
   "load",
@@ -1183,12 +1361,14 @@ window.addEventListener(
         "ht_employee_name"
       );
 
+
     if(savedName){
 
       document.getElementById(
         "nameInput"
       ).value =
         savedName;
+
 
       await findEmployee();
 
