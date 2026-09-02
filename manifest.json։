@@ -1,0 +1,17 @@
+{
+  "name": "Home Telecom Sales",
+  "short_name": "HT Sales",
+  "start_url": "/ashxatakci-hashvich/",
+  "scope": "/ashxatakci-hashvich/",
+  "display": "standalone",
+  "background_color": "#08101d",
+  "theme_color": "#08101d",
+  "icons": [
+    {
+      "src": "IMG_7968.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
