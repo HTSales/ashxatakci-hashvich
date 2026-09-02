@@ -255,6 +255,7 @@ body{
 <div class="sub">Home Telecom</div>
 
 <div id="loginArea">
+
   <div class="loginBox">
 
     <div class="loginTitle">Մուտք</div>
@@ -292,6 +293,7 @@ body{
     </button>
 
   </div>
+
 </div>
 
 <div id="resultArea" style="display:none">
@@ -314,18 +316,12 @@ body{
 </div>
 
 <script>
-const SUPABASE_URL =
-"https://pstoegdsngmkxggyaloz.supabase.co";
+const SUPABASE_URL="https://pstoegdsngmkxggyaloz.supabase.co";
+const SUPABASE_KEY="sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
 
-const SUPABASE_KEY =
-"sb_publishable_PScArCHEI_Oq8XToX6F-EA_ep-BF19a";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-const fieldByCode = {
+const fieldByCode={
   home_standard:"package_6900",
   home_premium:"package_7900",
   home_ultima:"package_8900",
@@ -337,45 +333,31 @@ const fieldByCode = {
   iptv3:"package_iptv3"
 };
 
-const packageOrder = [
-  "home_standard",
-  "home_premium",
-  "home_ultima",
-  "inet1",
-  "inet2",
-  "inet3",
-  "iptv1",
-  "iptv2",
-  "iptv3"
+const packageOrder=[
+  "home_standard","home_premium","home_ultima",
+  "inet1","inet2","inet3",
+  "iptv1","iptv2","iptv3"
 ];
 
-let employee = null;
-let packages = [];
-let currentDate = "";
-let loginMode = "name";
+let employee=null;
+let packages=[];
+let currentDate="";
+let loginMode="name";
 
 function money(v){
-  return new Intl.NumberFormat("hy-AM")
-    .format(Math.round(Number(v)||0)) + " դրամ";
+  return new Intl.NumberFormat("hy-AM").format(Math.round(Number(v)||0))+" դրամ";
 }
 
 function todayKey(){
-  const parts =
-    new Intl.DateTimeFormat(
-      "en-CA",
-      {
-        timeZone:"Asia/Yerevan",
-        year:"numeric",
-        month:"2-digit",
-        day:"2-digit"
-      }
-    ).formatToParts(new Date());
+  const parts=new Intl.DateTimeFormat("en-CA",{
+    timeZone:"Asia/Yerevan",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  }).formatToParts(new Date());
 
-  const map = {};
-
-  parts.forEach(p=>{
-    map[p.type]=p.value;
-  });
+  const map={};
+  parts.forEach(p=>map[p.type]=p.value);
 
   return `${map.year}-${map.month}-${map.day}`;
 }
@@ -384,33 +366,25 @@ function updateClock(){
   const dateEl=document.getElementById("dateText");
   const clockEl=document.getElementById("clockText");
 
-  if(!dateEl || !clockEl) return;
+  if(!dateEl||!clockEl)return;
 
   const now=new Date();
 
-  dateEl.textContent=
-    now.toLocaleDateString(
-      "hy-AM",
-      {
-        timeZone:"Asia/Yerevan",
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      }
-    );
+  dateEl.textContent=now.toLocaleDateString("hy-AM",{
+    timeZone:"Asia/Yerevan",
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
 
-  clockEl.textContent=
-    now.toLocaleTimeString(
-      "hy-AM",
-      {
-        timeZone:"Asia/Yerevan",
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit",
-        hour12:false
-      }
-    );
+  clockEl.textContent=now.toLocaleTimeString("hy-AM",{
+    timeZone:"Asia/Yerevan",
+    hour:"2-digit",
+    minute:"2-digit",
+    second:"2-digit",
+    hour12:false
+  });
 }
 
 function showError(text){
@@ -440,31 +414,25 @@ async function mainAction(){
 }
 
 async function findEmployee(){
-
-  const name =
-    document.getElementById("nameInput")
-    .value
-    .trim();
+  const name=document.getElementById("nameInput").value.trim();
 
   if(!name){
     showError("Գրիր քո անունը");
     return;
   }
 
-  status.textContent="Ստուգվում է...";
+  document.getElementById("status").textContent="Ստուգվում է...";
 
-  const result =
-    await db
+  const result=await db
     .from("employees")
     .select("id,name,active,access_code")
     .eq("active",true)
     .ilike("name",name)
     .maybeSingle();
 
-  status.textContent="";
+  document.getElementById("status").textContent="";
 
   if(result.error){
-    console.error(result.error);
     showError("Չհաջողվեց ստուգել անունը");
     return;
   }
@@ -483,8 +451,8 @@ async function findEmployee(){
 
     loginMode="create";
 
-    document.getElementById("loginInfo").textContent =
-      "Առաջին մուտքն է։ Ստեղծիր քո կոդը։ Հաջորդ բոլոր մուտքերին նույն կոդն է պետք։";
+    document.getElementById("loginInfo").textContent=
+      "Առաջին մուտքն է։ Ստեղծիր քո կոդը։ Հաջորդ անգամ նույն կոդով ես մտնելու։";
 
     document.getElementById("codeArea").innerHTML=`
       <input
@@ -506,14 +474,14 @@ async function findEmployee(){
       >
     `;
 
-    document.getElementById("mainButton").textContent =
+    document.getElementById("mainButton").textContent=
       "Ստեղծել կոդ և մուտք գործել";
 
   }else{
 
     loginMode="login";
 
-    document.getElementById("loginInfo").textContent =
+    document.getElementById("loginInfo").textContent=
       "Մուտքագրիր քո կոդը";
 
     document.getElementById("codeArea").innerHTML=`
@@ -527,24 +495,16 @@ async function findEmployee(){
       >
     `;
 
-    document.getElementById("mainButton").textContent =
+    document.getElementById("mainButton").textContent=
       "Մուտք գործել";
   }
 }
 
 async function createFirstCode(){
-
   clearError();
 
-  const code =
-    document.getElementById("codeInput")
-    .value
-    .trim();
-
-  const repeat =
-    document.getElementById("codeRepeatInput")
-    .value
-    .trim();
+  const code=document.getElementById("codeInput").value.trim();
+  const repeat=document.getElementById("codeRepeatInput").value.trim();
 
   if(!/^\d{4,8}$/.test(code)){
     showError("Կոդը պետք է լինի 4-ից 8 թվանշան");
@@ -556,10 +516,9 @@ async function createFirstCode(){
     return;
   }
 
-  status.textContent="Կոդը պահպանվում է...";
+  document.getElementById("status").textContent="Կոդը պահպանվում է...";
 
-  const check =
-    await db
+  const check=await db
     .from("employees")
     .select("id,name,active,access_code")
     .eq("id",employee.id)
@@ -567,17 +526,17 @@ async function createFirstCode(){
     .single();
 
   if(check.error){
-    status.textContent="";
+    document.getElementById("status").textContent="";
     showError("Չհաջողվեց ստուգել աշխատակցին");
     return;
   }
 
   if(check.data.access_code){
-    status.textContent="";
+    document.getElementById("status").textContent="";
     employee=check.data;
     loginMode="login";
 
-    document.getElementById("loginInfo").textContent =
+    document.getElementById("loginInfo").textContent=
       "Կոդն արդեն ստեղծված է։ Մուտքագրիր քո կոդը։";
 
     document.getElementById("codeArea").innerHTML=`
@@ -590,14 +549,11 @@ async function createFirstCode(){
       >
     `;
 
-    document.getElementById("mainButton").textContent =
-      "Մուտք գործել";
-
+    document.getElementById("mainButton").textContent="Մուտք գործել";
     return;
   }
 
-  const result =
-    await db
+  const result=await db
     .from("employees")
     .update({access_code:code})
     .eq("id",employee.id)
@@ -605,10 +561,9 @@ async function createFirstCode(){
     .select("id,name,active,access_code")
     .maybeSingle();
 
-  status.textContent="";
+  document.getElementById("status").textContent="";
 
   if(result.error){
-    console.error(result.error);
     showError("Կոդը պահպանել չհաջողվեց");
     return;
   }
@@ -621,32 +576,24 @@ async function createFirstCode(){
 
   employee=result.data;
 
-  localStorage.setItem(
-    "ht_employee_name",
-    employee.name
-  );
+  localStorage.setItem("ht_employee_name",employee.name);
 
   await openAccount();
 }
 
 async function loginWithCode(){
-
   clearError();
 
-  const code =
-    document.getElementById("codeInput")
-    .value
-    .trim();
+  const code=document.getElementById("codeInput").value.trim();
 
   if(!code){
     showError("Գրիր կոդը");
     return;
   }
 
-  status.textContent="Մուտք...";
+  document.getElementById("status").textContent="Մուտք...";
 
-  const result =
-    await db
+  const result=await db
     .from("employees")
     .select("id,name,active")
     .eq("id",employee.id)
@@ -654,10 +601,9 @@ async function loginWithCode(){
     .eq("active",true)
     .maybeSingle();
 
-  status.textContent="";
+  document.getElementById("status").textContent="";
 
   if(result.error){
-    console.error(result.error);
     showError("Չհաջողվեց մուտք գործել");
     return;
   }
@@ -669,16 +615,12 @@ async function loginWithCode(){
 
   employee=result.data;
 
-  localStorage.setItem(
-    "ht_employee_name",
-    employee.name
-  );
+  localStorage.setItem("ht_employee_name",employee.name);
 
   await openAccount();
 }
 
 async function openAccount(){
-
   document.getElementById("loginArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
 
@@ -690,84 +632,59 @@ async function openAccount(){
 }
 
 async function loadResult(){
-
-  if(!employee) return;
+  if(!employee)return;
 
   currentDate=todayKey();
 
-  const [pkgResult,salesResult] =
-    await Promise.all([
+  const [pkgResult,salesResult]=await Promise.all([
+    db.from("packages").select("*"),
 
-      db
-      .from("packages")
-      .select("*"),
-
-      db
-      .from("daily_sales")
+    db.from("daily_sales")
       .select("*")
       .eq("employee_id",employee.id)
       .eq("sale_date",currentDate)
       .maybeSingle()
-
-    ]);
+  ]);
 
   if(pkgResult.error){
-    console.error(pkgResult.error);
-    status.textContent="Փաթեթները բեռնել չհաջողվեց";
+    document.getElementById("status").textContent="Փաթեթները բեռնել չհաջողվեց";
     return;
   }
 
   if(salesResult.error){
-    console.error(salesResult.error);
-    status.textContent="Վաճառքները բեռնել չհաջողվեց";
+    document.getElementById("status").textContent="Վաճառքները բեռնել չհաջողվեց";
     return;
   }
 
-  packages=(pkgResult.data||[])
-    .sort((a,b)=>
-      packageOrder.indexOf(a.code) -
-      packageOrder.indexOf(b.code)
-    );
+  packages=(pkgResult.data||[]).sort(
+    (a,b)=>packageOrder.indexOf(a.code)-packageOrder.indexOf(b.code)
+  );
 
   renderResult(salesResult.data);
 
-  status.textContent="● Թարմացված է";
+  document.getElementById("status").textContent="● Թարմացված է";
 }
 
 function renderResult(row){
-
   let totalSales=0;
   let totalBonus=0;
   let html="";
 
   packages.forEach(pkg=>{
-
     const field=fieldByCode[pkg.code];
+    if(!field)return;
 
-    if(!field) return;
+    const count=Number(row ? row[field] : 0)||0;
+    const employeeBonus=Number(pkg.employee_bonus)||0;
+    const earned=count*employeeBonus;
 
-    const count =
-      Number(row ? row[field] : 0)||0;
-
-    const employeeBonus =
-      Number(pkg.employee_bonus)||0;
-
-    const earned =
-      count * employeeBonus;
-
-    totalSales += count;
-    totalBonus += earned;
+    totalSales+=count;
+    totalBonus+=earned;
 
     html+=`
       <div class="package">
-
-        <div class="packageName">
-          ${escapeHTML(pkg.name||pkg.code)}
-        </div>
-
-        <div class="price">
-          ${money(pkg.price)}
-        </div>
+        <div class="packageName">${escapeHTML(pkg.name||pkg.code)}</div>
+        <div class="price">${money(pkg.price)}</div>
 
         <div class="oneSale">
           1 վաճառքից՝ ${money(employeeBonus)}
@@ -780,7 +697,6 @@ function renderResult(row){
         <div class="earned">
           +${money(earned)}
         </div>
-
       </div>
     `;
   });
@@ -789,16 +705,13 @@ function renderResult(row){
 
   if(totalBonus<20000){
     motivation="Սա քիչ է, ավելին կարող ես դու... 🚀";
-  }
-  else if(totalBonus<40000){
+  }else if(totalBonus<40000){
     motivation="Այ էսպես շարունակիր 🔥";
-  }
-  else{
+  }else{
     motivation="Դու գերազանցեցիր քեզ 🏆";
   }
 
   document.getElementById("employeeResult").innerHTML=`
-
     <div class="employeeCard">
 
       <div class="employeeName">
@@ -806,7 +719,6 @@ function renderResult(row){
       </div>
 
       <div class="totalBonus">
-
         <div class="totalLabel">
           Այսօրվա քո բոնուսը
         </div>
@@ -818,7 +730,6 @@ function renderResult(row){
         <div class="salesCount">
           ${totalSales} վաճառք
         </div>
-
       </div>
 
       <div class="motivation">
@@ -834,27 +745,19 @@ function renderResult(row){
 }
 
 function resetLogin(){
-
   employee=null;
   loginMode="name";
 
   document.getElementById("nameInput").disabled=false;
   document.getElementById("codeArea").innerHTML="";
-
-  document.getElementById("loginInfo").textContent =
-    "Գրիր քո անունը";
-
-  document.getElementById("mainButton").textContent =
-    "Շարունակել";
-
-  document.getElementById("changeNameButton").style.display =
-    "none";
+  document.getElementById("loginInfo").textContent="Գրիր քո անունը";
+  document.getElementById("mainButton").textContent="Շարունակել";
+  document.getElementById("changeNameButton").style.display="none";
 
   clearError();
 }
 
 function logout(){
-
   employee=null;
   loginMode="name";
 
@@ -863,19 +766,12 @@ function logout(){
 
   document.getElementById("nameInput").disabled=false;
   document.getElementById("nameInput").value="";
-
   document.getElementById("codeArea").innerHTML="";
+  document.getElementById("loginInfo").textContent="Գրիր քո անունը";
+  document.getElementById("mainButton").textContent="Շարունակել";
+  document.getElementById("changeNameButton").style.display="none";
 
-  document.getElementById("loginInfo").textContent =
-    "Գրիր քո անունը";
-
-  document.getElementById("mainButton").textContent =
-    "Շարունակել";
-
-  document.getElementById("changeNameButton").style.display =
-    "none";
-
-  status.textContent="";
+  document.getElementById("status").textContent="";
   clearError();
 }
 
@@ -888,8 +784,7 @@ function escapeHTML(t){
     .replaceAll("'","&#039;");
 }
 
-const savedName =
-  localStorage.getItem("ht_employee_name");
+const savedName=localStorage.getItem("ht_employee_name");
 
 if(savedName){
   document.getElementById("nameInput").value=savedName;
@@ -898,8 +793,7 @@ if(savedName){
 setInterval(updateClock,1000);
 
 setInterval(()=>{
-
-  if(!employee) return;
+  if(!employee)return;
 
   const newDate=todayKey();
 
@@ -909,7 +803,6 @@ setInterval(()=>{
   }
 
   loadResult();
-
 },5000);
 
 </script>
